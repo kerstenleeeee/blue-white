@@ -2,7 +2,7 @@
  "use strict";
 	
 	$(document).ready(function() {
-		$('#data-table-basic thead tr:eq(1) th').each(function (i) {
+		$('#data-table-basic-tm500 thead tr:eq(1) th').each(function (i) {
 			var title = $(this).text();
 			if (title != "") {
 				$(this).html('<input type="text" placeholder="Search ' + title + '" />');
@@ -13,7 +13,7 @@
 			$('input', this).on('keyup change', function () {
 				if (table.column(i).search() !== this.value) {
 					//window.alert(i);
-					if (i == 7) {
+					if (i == 8) {
 						return;
 					}
 					table
@@ -23,12 +23,12 @@
 				}
 			});
 		});
-		var table = $('#data-table-basic').DataTable({
+		var table = $('#data-table-basic-tm500').DataTable({
 			orderCellsTop: true,
 			"columnDefs": [
 				{
 					'orderable' 	: false, 
-                    'targets'       : [7],
+                    'targets'       : [8],
                	},
 			],
 			"bLengthChange": false,
@@ -45,8 +45,8 @@
 
 		var editButton;
 		var deleteButton;
-		$('#data-table-basic tbody').on('click', 'td', function () {
-			if ($(this).index() == 7) {
+		$('#data-table-basic-tm500 tbody').on('click', 'td', function () {
+			if ($(this).index() == 8) {
 				return;
 			}
 

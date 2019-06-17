@@ -94,6 +94,28 @@ body{
     padding-top: 5px;
 }
 
+.new-div {
+    position: absolute;
+    top: -2px;
+    padding-top: 5px;
+    right: 35px;
+    width: 200px;
+}
+
+.new-div a{
+    float: right;
+    color: #fff;
+    font-size: 19px;
+    font-family: "Nokia Pure Text";
+    font-weight: 500;
+    line-height: 50px;
+    margin-left: 20px;
+    text-decoration:none;
+}
+
+.new-div a:hover{
+    color: #eaf0f2;
+}
 
 /*************** 
     Main Body 
@@ -112,6 +134,7 @@ body{
     cursor: pointer;
 }
 
+
 /******* header buttons *********/
 .main .col-sm-6 .add-button button{
     background-color: #15418f; 
@@ -129,6 +152,7 @@ body{
     vertical-align: text-bottom;
     float: right;
 }
+
 
 /******* modal buttons **********/
 .modal-dialog .modal-footer .add-modal-buttons button[type=submit]{
