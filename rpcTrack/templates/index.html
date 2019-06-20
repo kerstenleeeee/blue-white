@@ -12,7 +12,6 @@
 
     <meta name="description" content="">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon -->
@@ -53,7 +52,7 @@
     <script src="{% static 'js/data-table/jquery.dataTables.min.js' %}"></script>
     <!-- <script src="{% static 'js/data-table/datatables.min.js' %}"></script> -->
     <script src="{% static 'js/data-table/dataTables.fixedHeader.min.js' %}"></script>
-    <script src="{% static 'js/data-table/data-table-act.js' %}"></script>
+    <script src="{% static 'js/data-table/data-table-act-bts.js' %}"></script>
     <script src="{% static 'js/data-table/data-table-act-tm500.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
@@ -192,6 +191,35 @@
             $('#editUE').append(_optionsUE);
     });
     </script>
+    <!------------- INFO ---------------------->
+    <script>
+        $(document).on("click", ".open-info", function () {
+            var ipd = $(this).data('todo').id;
+            var und = $(this).data('todo').un;
+            var pdd = $(this).data('todo').pass;
+            $(".col-sm-6 #bts_server").val( ipd );
+            $(".col-sm-6 #bts_username").val( und );
+            $(".col-sm-6 #bts_password").val( pdd );
+    });
+    </script>
+    <!------------- Show Info --------------->
+    <script>
+        jQuery(document).ready(function(){
+            jQuery('#btsInfoButton').on('click', function(event) {        
+                jQuery('#btsInfoShow').toggle('show');
+            });
+        });
+    </script>
+    <script>
+        $(document).mouseup(function(e){
+            var container = $("#btsInfoShow");
+
+            // If the target of the click isn't the container
+            if(!container.is(e.target) && container.has(e.target).length === 0){
+                container.hide();
+            }
+        });
+    </script>
     <!-----------------------------------------------------
     ---------------------- SCRIPTS ------------------------
     ------------------------------------------------------>
@@ -236,13 +264,19 @@
                             <th style="display: none"> Domain </th>
                             <th style="display: none"> BTS </th>
                             <th style="display: none"> UE </th>
+                            <th style="display: none"> Fetch </th>
                             <th style="width: 5%"></th>
+                            <th style="display: none"> last_fetch </th>
+                            <th style="display: none"> WCDMAPilot </th>
+                            <th style="display: none"> GTAPluginGiant </th>
+                            <th style="display: none"> DSPExplorer </th>
                         </tr>
                     </thead>
                     <tbody>
                         <!---------------- FOR LOOP TO GET ALL RPCS ------------------------------->
+                        
                         {% for rpc in getBTSPC %}
-                            <tr>
+                            <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
                                 <td class="element">{{ rpc.displayName }}</td>
                                 <td class="element">{{ rpc.serverName }}</td>
                                 <td class="element" style="display: none">{{ rpc.username }}</td>
@@ -250,6 +284,7 @@
                                 <td class="element" style="display: none">{{ rpc.domain }}</td>
                                 <td class="element" style="display: none">{{ rpc.bts }}</td>
                                 <td class="element" style="display: none">{{ rpc.ue }}</td>
+                                <td class="element" style="display: none">{{ rpc.fetch }}</td>
                                 <td class="element" style="width: 10%">
                                 <a data-toggle="modal" data-id="{{ rpc.serverName }}" data-toggle="modal" class="open-DeleteDialog btn btn-primary" href="#deleteIndividual" 
                                 onmouseover="this.style.color='#15418f';" 
@@ -262,6 +297,10 @@
                                 onmouseout="this.style.color='black';" 
                                 style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-edit"></i></a>
                                 </td>
+                                <td class="element" style="display: none">{{ rpc.bts_info.last_fetch }}</td>
+                                <td class="element" style="display: none">{{ rpc.bts_info.WCDMAPilot }}</td>
+                                <td class="element" style="display: none">{{ rpc.bts_info.GTAPluginGiant }}</td>
+                                <td class="element" style="display: none">{{ rpc.bts_info.DSPExplorer }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -312,6 +351,7 @@
                     </tbody>
                 </table>
             </div>
+            
         </div>
 
         <!-------------------------- DATA TABLE DETAILS ---------------->
@@ -323,7 +363,7 @@
                     </tr>
                     <tr></tr>
                 </thead>
-                <tbody>
+                <tbody style="position: relative; top: -55px">
                     <tr>
                         <td id="labelDisplayName" style="padding-right: 11px"></td>
                         <td id="infoDisplayName"></td>
@@ -365,7 +405,55 @@
                         <td id="infoTMT"></td>
                     </tr>
                 </tbody>
+                <tfoot style="position: relative; top: -35px">
+                    <tr>
+                        <form method="POST" class="form-horizontal">
+                            {% csrf_token %}
+                                <div class="form-group row">           
+                                    <input type="text" style="display: none;" name="bts_server" id="bts_server" value="">
+                                </div>
+                                <div class="form-group row">           
+                                    <input type="text" style="display: none;" name="bts_username" id="bts_username" value="">
+                                </div>
+                                <div class="form-group row">           
+                                    <input type="text" style="display: none;" name="bts_password" id="bts_password" value="">
+                                </div>
+                                <div class="form-group row">           
+                                    <input type="text" style="display: none" value="bts_fetch" name="operation">
+                                </div>
+                                <td>
+                                    <button type="submit" ID="btsFetch" style="display: none; padding: 5px"/>Fetch Info</button>
+                                </td>
+                        </form>
+                        <td>
+                            <button ID="btsInfoButton" style="display: none; padding: 5px"/>Show Info</button>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
+
+            <div id="btsInfoShow" style="display: none; position: relative; top: -20px">
+                <table id="basic-info">
+                    <tbody style="position: relative; top: -5px">
+                        <tr>
+                            <td id="labelFetch" style="padding-right: 11px"></td>
+                            <td id="infoFetch"></td>
+                        </tr>
+                        <tr>
+                            <td id="labelWCDMAPilot" style="padding-right: 11px"></td>
+                            <td id="infoWCDMAPilot"></td>
+                        </tr>
+                        <tr>
+                            <td id="labelGTAPluginGiant" style="padding-right: 11px"></td>
+                            <td id="infoGTAPluginGiant"></td>
+                        </tr>
+                        <tr>
+                            <td id="labelDSPExplorer" style="padding-right: 11px"></td>
+                            <td id="infoDSPExplorer"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
 <!------------------------------------------------------------------->
 <!------------------------ MODAL - MESSAGES  -------------------------->

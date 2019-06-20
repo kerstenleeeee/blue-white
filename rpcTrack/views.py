@@ -8,9 +8,10 @@ from django.utils.datastructures import MultiValueDictKeyError
 ### modules ###
 import platform
 import os
+import subprocess
 
 ### imports ###
-from .models import remotePC, ueList, btsList, tm500, btsPC, tm500PC
+from .models import remotePC, ueList, btsList, tm500, btsPC, tm500PC, btsPCInfo
 
 # Create your views here.
 
@@ -22,6 +23,9 @@ def index(request):
     getTM = tm500.objects.all()
     getBTSPC = btsPC.objects.all()
     getTMPC = tm500PC.objects.all()
+    getBTSINFO = btsPCInfo.objects.all()
+    # newnew = btsPCInfo(serverName=btsPC.objects.get(serverName='10.12.25.11'), WCDMAPilot = '12345')
+    # newnew.save()
 
     if request.method == "POST":
         operation = request.POST['operation']
@@ -96,7 +100,7 @@ def index(request):
             editDN = request.POST['editDN']
             editUN = request.POST['editUN']
             editPW = request.POST['editPW']
-            editDM = request.POST['editDM']
+            editDM = request.POST['editDM'] 
             editUE = request.POST['editUE']
             try:
                 editBTS = request.POST['editBTS']
@@ -110,6 +114,42 @@ def index(request):
                     editTNV = request.POST['editTENV']
                     tm500PC.objects.filter(serverName = ipe).update(displayName = editDN, username = editUN, password = editPW, domain = editDM, ue = editUE, tenv = editTNV)
             messages.success(request, 'Successfully Updated')
+
+        elif operation == "bts_fetch":
+            bts_pc = request.POST['bts_server']
+            bts_un = request.POST['bts_username']
+            bts_ps = request.POST['bts_password']
+            bts_inputC = "net use Z: \\\\" + bts_pc + "\\C$ /user:" + bts_un + " " + bts_ps
+            bts_inputD = "net use G: \\\\" + bts_pc + "\\D$ /user:" + bts_un + " " + bts_ps
+            btsPC.objects.filter(serverName = bts_pc).update(fetch = 1)
+            try:
+                s = subprocess.call(bts_inputC, shell=True)
+                s = subprocess.call(bts_inputD, shell=True)
+                if(s == 0):
+                    print("success - mount")
+                elif(s == 2):
+                    print("already mounted")
+                try:
+                    f = open("Z:\\Pegasus\\workspaceWCDMA_Pilot\\workspaceWCDMA_Pilot.txt", "r")
+                    contents = f.read()
+                    rev1 = contents.split(': ')
+                    f = open("G:\\CI\\CI_TOOL\\DSPExplorer\\DSPExplorer.txt", "r")
+                    contents = f.read()
+                    rev2 = contents.split(': ')
+                    f = open("G:\\CI\\CI_TOOL\\GTA_Plugin_Giant\\GTA_Plugin_Giant.txt", "r")
+                    contents = f.read()
+                    rev3 = contents.split(': ')
+                    bts_info = btsPCInfo(serverName=btsPC.objects.get(serverName=bts_pc), WCDMAPilot = rev1[1], DSPExplorer = rev2[1], GTAPluginGiant = rev3[1])
+
+                    bts_info.save()
+                    #subprocess.call('net use Z: /del /y', shell=True)
+                    #print("success - unmount")
+                except:
+                    print("fail - unmount")
+                #subprocess.call('net use Z: /del /y', shell=True)
+            except:
+                print("fail - mount")
+            # print(bts_pc)
     context = {
         "getPCS" : getPCS,
         "getBTS" : getBTS,
@@ -117,6 +157,7 @@ def index(request):
         "getTM" : getTM,
         "getBTSPC" : getBTSPC,
         "getTMPC" : getTMPC,
+        "getBTSINFO" : getBTSINFO,
     }
     return render(request, 'index.html', context)
 

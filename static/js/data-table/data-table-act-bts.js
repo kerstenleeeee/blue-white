@@ -2,7 +2,28 @@
  "use strict";
 	
 	$(document).ready(function() {
-		var table = $('#data-table-basic-tm500').DataTable({
+		$('#data-table-basic thead tr:eq(1) th').each(function (i) {
+			var title = $(this).text();
+			if (title != "") {
+				$(this).html('<input type="text" placeholder="Search ' + title + '" />');
+			}
+			//window.alert(title);
+
+
+			$('input', this).on('keyup change', function () {
+				if (table.column(i).search() !== this.value) {
+					//window.alert(i);
+					if (i == 8) {
+						return;
+					}
+					table
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		});
+		var table = $('#data-table-basic').DataTable({
 			orderCellsTop: true,
 			"columnDefs": [
 				{
@@ -11,7 +32,6 @@
                	},
 			],
 			"bLengthChange": false,
-			"dom": '<"toolbar">frtip',
 			"scrollY":        "200px",
 			"scrollX":        "200px",
         	"scrollCollapse": true,
@@ -19,9 +39,9 @@
         	"aoColumnDefs": [
         		{
 					'searchable' 	: false, 
-                    'targets'       : [2, 3, 4, 5, 6, 7],
+                    'targets'       : [5],
                	},
-        	] 
+        	]
 		});
 
 
@@ -30,15 +50,18 @@
 
 		var editButton;
 		var deleteButton;
-		$('#data-table-basic-tm500 tbody').on('click', 'td', function () {
+		$('#data-table-basic tbody').on('click', 'td', function () {
 			if ($(this).index() == 8) {
 				return;
 			}
-
+			
 			var data = table.row(this).data();
-			window.alert(data);
+			
+			// window.alert(data[7]);
+
 
 			// labels
+
 			$("#labelDisplayName").text("Display Name:");
 			$("#labelServerName").text("Server Name:");
 			$("#labelUsername").text("Username:");
@@ -57,6 +80,9 @@
 			$('#infoBTS').text(data[5]);
 			$('#infoUE').text(data[6]);
 
+			
+			//window.alert(data[7]);
+
 			if (data[6] == "TM500") {
 				// $("#labelTMU").text("Username:");
 				// $("#labelTMP").text("Password:");
@@ -65,11 +91,6 @@
 				// $('#infoTMU').text(data[7]);
 				// $('#infoTMP').text(data[8]);
 				$('#infoTMT').text(data[7]);
-				document.getElementById("btsFetch").style.display = "table";
-				// window.alert("no")
-				if (data[7] == 0) {
-					// window.alert(data[7])
-				}
 			}
 			else{
 				// $("#labelTMU").text("");
@@ -79,22 +100,28 @@
 				// $('#infoTMU').text("");
 				// $('#infoTMP').text("");
 				$('#infoTMT').text("");
+				document.getElementById("btsFetch").style.display = "table";
+				// window.alert("yes")
+				if (data[7] == 1) {
+					// window.alert("Hello");
+					document.getElementById("btsInfoButton").style.display = "table";
+					$('#labelFetch').text("Last Fetch: ");
+					$('#labelWCDMAPilot').text("workspaceWCDMA_Pilot: ");
+					$('#labelGTAPluginGiant').text("GTA_Plugin_Giant: ");
+					$('#labelDSPExplorer').text("DSPExplorer: ");
+
+					$('#infoFetch').text(data[9]);
+					$('#infoWCDMAPilot').text(data[10]);
+					$('#infoGTAPluginGiant').text(data[11]);
+					$('#infoDSPExplorer').text(data[12]);
+				}
+				else{
+					document.getElementById("btsInfoButton").style.display = "none";
+				}
 			}		
 
-
-			
 			// alert('You clicked on ' + data[0] + '\'s row');
 		});
-		$(".infoEditButton").click(function () {
-			$(editButton).click();
-		});
-
-		$(".infoDeleteButton").click(function () {
-			$(deleteButton).click();
-		});
-		$('.modal').on('hidden.bs.modal', function () {
-			$("body").css("padding","0");
-		})
 	});
  
 })(jQuery); 
