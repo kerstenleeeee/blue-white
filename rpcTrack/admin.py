@@ -2,14 +2,13 @@ from django.contrib import admin
 from . import models
 
 # Register your models here.
-admin.site.register(models.remotePC)
-admin.site.register(models.btsList)
-admin.site.register(models.ueList)
-admin.site.register(models.tm500)
-admin.site.register(models.btsPC)
-admin.site.register(models.tm500PC)
+admin.site.register(models.UE_LIST)			# list of all ue types
+admin.site.register(models.BTS_PC)			# list of all remote pcs
+admin.site.register(models.tm500PC)			# list of all tm500 pcs
+admin.site.register(models.BTS_INFO)	
+admin.site.register(models.BTS_MODULES)	
 
-class btsInfoTime(admin.ModelAdmin):
+'''class btsInfoTime(admin.ModelAdmin):
     readonly_fields = ('last_fetch',)
     
-admin.site.register(models.btsPCInfo, btsInfoTime)
+admin.site.register(models.btsPCInfo, btsInfoTime)'''

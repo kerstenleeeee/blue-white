@@ -11,6 +11,7 @@ django-cors-headers = "==2.4.0"
 djangorestframework = "==3.9.0"
 dj-database-url = "==0.5.0"
 dj-static = "==0.0.6"
+requests = "*"
 
 [requires]
 python_version = "3.7"

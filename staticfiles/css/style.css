@@ -1,0 +1,185 @@
+/*************** 
+    Default 
+***************/
+
+@import url(//db.onlinewebfonts.com/c/b0040e9e6a6db92b5c252acee3891874?family=Nokia+Pure+Text);
+@font-face {font-family: "Nokia Pure Text";
+    src: url("//db.onlinewebfonts.com/t/b0040e9e6a6db92b5c252acee3891874.eot");
+    src: url("//db.onlinewebfonts.com/t/b0040e9e6a6db92b5c252acee3891874.eot?#iefix") format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/b0040e9e6a6db92b5c252acee3891874.woff2") format("woff2"),
+    url("//db.onlinewebfonts.com/t/b0040e9e6a6db92b5c252acee3891874.woff") format("woff"),
+    url("//db.onlinewebfonts.com/t/b0040e9e6a6db92b5c252acee3891874.ttf") format("truetype"),
+    url("//db.onlinewebfonts.com/t/b0040e9e6a6db92b5c252acee3891874.svg#Nokia Pure Text") format("svg");
+}
+
+html{
+    background-color: #eaf0f2;
+    font-family: "Nokia Pure Text";
+}
+
+body{
+    font:17px;
+    font-family: "Nokia Pure Text"
+    padding:0;
+    margin:0;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    word-break: normal;
+}
+
+
+
+/*************** 
+    Header 
+***************/
+.head{
+    background:#124191;
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 99999;
+    padding: 5px;
+}
+
+.header{
+    width: 100%;
+    height: 50px;
+    background-color: #15418f;
+}
+
+.logo-title{
+    background-color: #15418f;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    padding-top: 9px;
+}
+
+.logo-title .logo{
+    width: 100px;
+    height: auto;
+    display: inline-block;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.logo-title .logo img{
+    max-width: 100%;
+    height: auto;
+}
+
+.pipe{
+    height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 2px;
+    background-color: hsla(0,0%,100%,.4);
+}
+
+.logo-title .itemH {
+    margin-left: 24px;
+    margin-right: 24px;
+    color: #fff;
+    font-size: 18px;
+    font-family: "Nokia Pure Text";
+    font-weight: 500;
+    line-height: 50px;
+    position: absolute;
+    top: -2px;
+    padding-top: 5px;
+}
+
+.new-div {
+    position: absolute;
+    top: -2px;
+    padding-top: 5px;
+    right: 35px;
+    width: 200px;
+}
+
+.new-div a{
+    float: right;
+    color: #fff;
+    font-size: 19px;
+    font-family: "Nokia Pure Text";
+    font-weight: 500;
+    line-height: 50px;
+    margin-left: 20px;
+    text-decoration:none;
+}
+
+.new-div a:hover{
+    color: #eaf0f2;
+}
+
+/*************** 
+    Main Body 
+***************/
+.main {
+    padding-top: 30px;
+    padding-bottom: 100px;
+    background-color: #eaf0f2;
+}
+
+.main .container{
+    width: 100%;
+}
+
+.table tbody tr{
+    cursor: pointer;
+}
+
+
+/******* header buttons *********/
+.main .col-sm-6 .add-button button{
+    background-color: #15418f; 
+    color: white; 
+    border: 2px solid #15418f;
+    vertical-align: text-bottom;
+    float: right;
+    margin-left: 5px;
+}
+
+.main .col-sm-6 .add-button button:hover{
+    background-color: #eaf0f2;
+    color: #15418f;
+    border: 2px solid #eaf0f2;
+    vertical-align: text-bottom;
+    float: right;
+}
+
+
+/******* modal buttons **********/
+.modal-dialog .modal-footer .add-modal-buttons button[type=submit]{
+    background-color: #15418f;  
+}
+
+.modal-dialog .modal-footer .add-modal-buttons button[type=submit]:hover{
+    background-color: #eaf0f2;
+    color: #15418f;
+    border: 0px solid #eaf0f2;
+    font-weight: bold;
+}
+
+.modal-dialog .modal-footer .add-modal-buttons button{
+    background-color: #eaf0f2;
+}
+
+.modal-dialog .modal-footer .add-modal-buttons button:hover{
+    color: #15418f;
+}
+
+.modal-dialog .modal-footer .success-modal-buttons button{
+    background-color: #eaf0f2;
+}
+
+.modal-dialog .modal-footer .success-modal-buttons button:hover{
+    color: #15418f;
+}
+
+/********* racks *********/

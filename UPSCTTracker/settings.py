@@ -25,18 +25,23 @@ SECRET_KEY = ')%2h=lq(ja5(!jgx^yno8pewsrkb%4l4h6zfve#(apmtiv%alx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20_000_000
+
 INSTALLED_APPS = [
-    'rpcTrack.apps.RpctrackConfig',
+    'rpcTrack.apps.RpctrackConfig', #app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +129,6 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'
