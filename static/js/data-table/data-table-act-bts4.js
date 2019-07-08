@@ -2,27 +2,6 @@
  "use strict";
 	
 	$(document).ready(function() {
-		$('#data-table-basic thead tr:eq(1) th').each(function (i) {
-			var title = $(this).text();
-			if (title != "") {
-				$(this).html('<input type="text" placeholder="Search ' + title + '" />');
-			}
-			//window.alert(title);
-
-
-			$('input', this).on('keyup change', function () {
-				if (table.column(i).search() !== this.value) {
-					//window.alert(i);
-					if (i == 8) {
-						return;
-					}
-					table
-						.column(i)
-						.search(this.value)
-						.draw();
-				}
-			});
-		});
 		var table = $('#data-table-basic').DataTable({
 			orderCellsTop: true,
 			"columnDefs": [
@@ -32,8 +11,6 @@
                	},
 			],
 			"bLengthChange": false,
-			"scrollY":        "200px",
-			"scrollX":        "200px",
         	"scrollCollapse": true,
         	"paging":         false,
         	"aoColumnDefs": [
@@ -41,6 +18,10 @@
 					'searchable' 	: false, 
                     'targets'       : [5],
                	},
+        	],
+        	"bFilter": false,
+        	buttons: [
+            	'copy', 'csv', 'excel', 'pdf', 'print'
         	]
 		});
 
@@ -57,12 +38,12 @@
 			
 			var data = table.row(this).data();
 			
-			window.alert(data[6]);
+			//window.alert(data[6]);
 
 
 			// labels
 
-			$("#labelDisplayName").text("Display Name:");
+			/**$("#labelDisplayName").text("Display Name:");
 			$("#labelServerName").text("Server Name:");
 			$("#labelUsername").text("Username:");
 			$("#labelPasssword").text("Password:");
@@ -95,13 +76,17 @@
 				// $('#infoTMU').text(data[7]);
 				// $('#infoTMP').text(data[8]);
 				$('#infoTM').text(data[12]);
+				$("#labelTMRack").text("");
+				$('#infoTMRack').text("");
 			}
 			else{
 				$("#labelTM").text("");
 				$('#infoTM').text("");
+				$("#labelTMRack").text("");
+				$('#infoTMRack').text("");
 			}
 
-			window.alert(data[15]);
+			//window.alert(data[15]);
 			if (data[15] == 1) {
 				$("#labelBTS").text("BTS:");
 				$("#labelUE").text("UE:");
@@ -129,7 +114,7 @@
 				}
 				else{
 					document.getElementById("btsInfoButton").style.display = "none";
-				}
+				}**/
 			// alert('You clicked on ' + data[0] + '\'s row');
 		});
 	});

@@ -9,13 +9,12 @@ from django.views.generic.edit import FormView
 ### modules ###
 import platform
 import os
-from io import BytesIO
-from PIL import Image
-import re
 import subprocess
+import openpyxl
+from openpyxl.styles import Font
 
 ### imports ###
-from .models import UE_LIST, BTS_PC, tm500PC, BTS_INFO, BTS_MODULES
+from .models import UE_LIST, BTS_PC, TM500_PC, BTS_INFO, BTS_MODULES, TM500_INFO
 
 # Create your views here.
 
@@ -23,9 +22,10 @@ def index(request):
     # display all remote pcs #
     getBTSPC = BTS_PC.objects.all()  # get bts pcs
     getUE = UE_LIST.objects.all()    # get ue types
-    getTMPC = tm500PC.objects.all() # get tm500 pcs
+    getTMPC = TM500_PC.objects.all() # get tm500 pcs
     getBTSINFO = BTS_INFO.objects.all() # get bts pc info
     getBTSMOD = BTS_MODULES.objects.all()
+    getTMINFO = TM500_INFO.objects.all()
     # newnew = btsPCInfo(serverName=btsPC.objects.get(serverName='10.12.25.11'), WCDMAPilot = '12345')
     # newnew.save()
 
@@ -66,12 +66,24 @@ def index(request):
                     else:
                         try:
                             bts_info = request.POST['bts_info_id']
-                            print("bts_info: ", bts_info)
-                            newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=tm500PC.objects.get(serverName=tm_500), bts_info_id=BTS_INFO.objects.get(bts_name=bts_info))
+                            print("bts_info: ", bts_info)   
+                            newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=TM500_PC.objects.get(ip=tm_500), bts_info_id=BTS_INFO.objects.get(bts_name=bts_info))
                             newBTS.save()
+                            count = 1;
+
+                            for mm in getBTSMOD:
+                                if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                    if count == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif count == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif count == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    count = count + 1
                         except:
                             print("no bts info")
-                            newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=tm_500)
+                            newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=TM500_PC.objects.get(ip=tm_500))
                             newBTS.save()
                         messages.success(request, 'Successfully Added')
                 elif u_e == "Test Terminal":
@@ -85,10 +97,45 @@ def index(request):
                             print("bts_info: ", bts_info)
                             newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tt_info_id=BTS_INFO.objects.get(bts_name=t_t), bts_info_id=BTS_INFO.objects.get(bts_name=bts_info))
                             newBTS.save()
+
+                            countbts = 1;
+                            counttt = 1;
+
+                            for mm in getBTSMOD:
+                                if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                    if countbts == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif countbts == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif countbts == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    countbts = countbts + 1
+                                if str(mm.bts_info_id.bts_name) == str(t_t):
+                                    if counttt == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif counttt == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif counttt == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    counttt = counttt + 1
                         except:
                             print("no bts info")
                             newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tt_info_id=BTS_INFO.objects.get(bts_name=t_t))
                             newBTS.save()
+                            counttt = 1;
+
+                            for mm in getBTSMOD:
+                                if str(mm.bts_info_id.bts_name) == str(t_t):
+                                    if counttt == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif counttt == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif counttt == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    counttt = counttt + 1
                         messages.success(request, 'Successfully Added')
             except:
                     messages.error(request, 'ERROR')
@@ -107,17 +154,68 @@ def index(request):
             p_n = request.POST['editPNum']
             a_n = request.POST['editANum']
 
+            '''
+            count = 1;
+
+                            for mm in getBTSMOD:
+                                if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                    if count == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif count == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif count == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    count = count + 1'''
+
             try:
                 bts_info = request.POST['editBTS']
                 print(bts_info)
                 try:
                     if u_e == 'TM500':
                         tm_500 = request.POST['editTM500']
-                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=tm_500)
+                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, bts_info_id=BTS_INFO.objects.get(bts_name=bts_info), tm500_pc_id=TM500_PC.objects.get(ip=tm_500))
+                        count = 1;
+
+                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
+                        for mm in getBTSMOD:
+                            if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                if count == 1:
+                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif count == 2:
+                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif count == 3:
+                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                count = count + 1
+
                     elif u_e == 'Test Terminal':
                         t_t = request.POST['editTT']
-                        print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+                        # print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                         BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, bts_info_id=BTS_INFO.objects.get(bts_name=bts_info), tt_info_id=BTS_INFO.objects.get(bts_name=t_t))
+                        countbts = 1;
+                        counttt = 1;
+
+                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
+                        for mm in getBTSMOD:
+                            if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                if countbts == 1:
+                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif countbts == 2:
+                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif countbts == 3:
+                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                countbts = countbts + 1
+                            if str(mm.bts_info_id.bts_name) == str(t_t):
+                                if counttt == 1:
+                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif counttt == 2:
+                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif counttt == 3:
+                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                counttt = counttt + 1
                     messages.success(request, 'Successfully Updated')
                 except IntegrityError as e:
                     messages.error(request, 'ERROR')
@@ -125,10 +223,24 @@ def index(request):
                 try:
                     if u_e == 'TM500':
                         tm_500 = request.POST['editTM500']
-                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=tm_500)
+                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=TM500_PC.objects.get(ip=tm_500))
                     elif u_e == 'Test Terminal':
                         t_t = request.POST['editTT']
                         BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tt_info_id=BTS_INFO.objects.get(bts_name=t_t))
+                        countbts = 1;
+                        counttt = 1;
+
+                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
+                        for mm in getBTSMOD:
+                            if str(mm.bts_info_id.bts_name) == str(t_t):
+                                if counttt == 1:
+                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif counttt == 2:
+                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                elif counttt == 3:
+                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                counttt = counttt + 1
                     messages.success(request, 'Successfully Updated')
                 except IntegrityError as e:
                     messages.error(request, 'ERROR')
@@ -224,47 +336,56 @@ def index(request):
 
             try:
                 # newInfo = BTS_INFO(i_d=index, bts_name=name, bts_type=typ_e, bts_use=use, rack=rack, switch_port=sport, notes=txta)
-                #BTS_INFO.objects.filter(i_d=server_name).update(bts_name=name, bts_type=typ_e, bts_use=use, rack=rack, switch_port=sport, notes=txta)
+                BTS_INFO.objects.filter(i_d=server_name).update(bts_name=name, bts_type=typ_e, bts_use=use, rack=rack, switch_port=sport, notes=txta)
                 counter = 0
-                i = 0
-                ii = len(inmod)
-                while True:
-                    print(i, ii)
-                    if i != ii:
-                        print("not equal")
-                        for mm in getBTSMOD:
-                            print("mod: ", inmod[i])
-                            nmod = inmod[i]
-                            if mm.i_d == nmod:
-                                if mm.assign == '0':
-                                    print("direct save")
-                                else:
-                                    counter = counter + 1
-                                    print("counter: ", counter)
-                    else:
-                        print("GRRRRRRRRRRRRRRRRRRR")
-                        break
-                    i = i + 1
-                '''for i in range(len(inmod)):
-                    print(i, len(inmod))
-                    print("mod: ", inmod[i])
+                for i in range(len(inmod)):
+                    #print(i, len(inmod))
+                    #print("mod: ", inmod[i])
                     # print(len(inmod))
                     nmod = inmod[i]
-                    if i == len(inmod):
-                        listMod = BTS_MODULES.objects.get(bts_info_id=BTS_INFO.objects.get(bts_name=name))
-                        print(listMod)
-                    else:
-                        for mm in getBTSMOD:
-                            #print(mm)
-                            if mm.i_d == nmod:
-                                if mm.assign == '0':
-                                    print("direct save")
+                    for mm in getBTSMOD:
+                        #print(mm)
+                        if str(mm.i_d) == str(nmod):
+                            if mm.assign == '0':
+                                BTS_MODULES.objects.filter(i_d=nmod).update(assign=1, bts_info_id=BTS_INFO.objects.get(bts_name=name))
+                                #print("direct save")
+                                break
+                            elif mm.assign == '1':
+                                counter = counter + 1
+                                #print("not allowed")
+                                break
+                #print("##################################################################")
+                for nn in getBTSMOD:
+                    #print(nn)
+                    if str(nn.bts_info_id) == str(name):
+                        #print(nn.bts_info_id, " == ", name)
+                        #print("module: ", nn.module_name, "(", nn.i_d, ")")
+                        for ii in range(len(inmod)):
+                            mmod = inmod[ii]
+                            #print(mmod)
+                            #print(ii, len(inmod))
+                            if ii == (len(inmod)-1):
+                                #print("lor: ", nn.i_d, mmod)
+                                if str(nn.i_d) == str(mmod):
+                                    #print("com: ", nn.i_d, mmod)
+                                    #print("let it go~")
                                     break
-                                elif mm.assign == '1':
-                                    counter = counter + 1
-                                    break'''
-
-
+                                else:
+                                    #print("end")
+                                    BTS_MODULES.objects.filter(i_d=nn.i_d).update(assign=0, bts_info_id="")
+                                    break
+                            else:
+                                if str(nn.i_d) == str(mmod):
+                                    #print("com: ", nn.i_d, mmod)
+                                    #print("let it go~")
+                                    break
+                    '''for ii in range(len(inmod)):
+                        mmod = inmod[i]
+                        
+                            if str(nn.i_d) == str(mmod):
+                                print("let it go")
+                                break
+                    print("delete ", nn.)'''
                 messages.success(request, 'Successfully Updated')
             except:
                 messages.error(request, 'ERROR')
@@ -379,57 +500,164 @@ def index(request):
                     messages.error(request, 'Cannot Delete BTS Module')
 
         ##############################################################
-        ################### FETCH DETAILS ############################
+        ################### TM500 PC OPERATIONS ######################
         ##############################################################
 
-        elif operation == "bts_fetch":
-            bts_pc = request.POST['bts_server']
-            bts_un = request.POST['bts_username']
-            bts_ps = request.POST['bts_password']
-            bts_inputC = "net use Z: \\\\" + bts_pc + "\\C$ /user:" + bts_un + " " + bts_ps
-            bts_inputD = "net use G: \\\\" + bts_pc + "\\D$ /user:" + bts_un + " " + bts_ps
-            btsPC.objects.filter(serverName = bts_pc).update(fetch = 1)
-            try:
-                s = subprocess.call(bts_inputC, shell=True)
-                s = subprocess.call(bts_inputD, shell=True)
-                if(s == 0):
-                    print("success - mount")
-                elif(s == 2):
-                    print("already mounted")
-                try:
-                    toolVersions = ""
-                    f = open("Z:\\Pegasus\\workspaceWCDMA_Pilot\\workspaceWCDMA_Pilot.txt", "r")
-                    contents = f.read()
-                    rev1 = contents.split(': ')
-                    toolVersions = toolVersions + "workspaceWCDMA_Pilot: " + rev1[1]
-                    # print(toolVersions)
-                    f = open("G:\\CI\\CI_TOOL\\DSPExplorer\\DSPExplorer.txt", "r")
-                    contents = f.read()
-                    rev2 = contents.split(': ')
-                    toolVersions = toolVersions + "DSPExplorer: " + rev2[1]
-                    # print(toolVersions)
-                    f = open("G:\\CI\\CI_TOOL\\GTA_Plugin_Giant\\GTA_Plugin_Giant.txt", "r")
-                    contents = f.read()
-                    rev3 = contents.split(': ')
-                    toolVersions = toolVersions + "GTA_Plugin_Giant: " + rev3[1]
-                    print(toolVersions)
-                    bts_info = btsPCInfo(serverName=btsPC.objects.get(serverName=bts_pc), tool_version = toolVersions)
+        elif operation == "add-tm500":
+            server_name = request.POST['server_name']
+            display_name = request.POST['display_name']
+            ussername = request.POST['username']
+            pass_word = request.POST['password']
+            do_main = request.POST['do_main']
+            sport = request.POST['sport']
+            txta = request.POST['txta']
+            rack = request.POST['rack']
+            s_n = request.POST['s_n']
+            p_n = request.POST['p_n']
+            a_n = request.POST['a_n']
 
-                    bts_info.save()
-                    #subprocess.call('net use Z: /del /y', shell=True)
-                    #print("success - unmount")
+            print(server_name, display_name, ussername, pass_word, do_main, sport, txta, rack)
+            try:
+                tm_info_ip = request.POST['tm_info_ip']
+                print(tm_info_ip)
+                try:
+                    #newTM = TM500_PC(ip=server_name)
+                    newTM = TM500_PC(ip=server_name, display_name=display_name, username=ussername, password=ussername, domain=do_main, tm500_info_id=TM500_INFO.objects.get(ip=tm_info_ip), rack=txta, switch_port=sport, notes=txta, serial_number=s_n, product_number=p_n, asset_number=a_n)
+                    newTM.save()
+                    messages.success(request, 'Successfully Added')
                 except:
-                    print("fail - unmount")
-                #subprocess.call('net use Z: /del /y', shell=True)
+                    messages.error(request, 'Cannot Add TM500 PC', extra_tags="tm500_add_error")
             except:
-                print("fail - mount")
-            # print(bts_pc)
+                #print("okay")
+                try:
+                    #newTM = TM500_PC(ip=server_name)
+                    newTM = TM500_PC(ip=server_name, display_name=display_name, username=ussername, password=ussername, domain=do_main, rack=txta, switch_port=sport, notes=txta, serial_number=s_n, product_number=p_n, asset_number=a_n)
+                    newTM.save()
+                    messages.success(request, 'Successfully Added')
+                except:
+                    messages.error(request, 'Cannot Add TM500 PC', extra_tags="tm500_add_error")
+
+        elif operation == "update-tm500":
+            server_name = request.POST['editID']
+            display_name = request.POST['editDN']
+            ussername = request.POST['editUN']
+            pass_word = request.POST['editPW']
+            do_main = request.POST['editDM']
+            sport = request.POST['editSPort']
+            txta = request.POST['editNotes']
+            rack = request.POST['editRack']
+            s_n = request.POST['editSNum']
+            p_n = request.POST['editPNum']
+            a_n = request.POST['editANum']
+
+            try:
+                tm_info_ip = request.POST['tm_info_ip']
+                #print(tm_info_ip)
+                try:
+                    TM500_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=ussername, domain=do_main, tm500_info_id=TM500_INFO.objects.get(ip=tm_info_ip), rack=txta, switch_port=sport, notes=txta, serial_number=s_n, product_number=p_n, asset_number=a_n)
+                    messages.success(request, 'Successfully Updated')
+                except:
+                    messages.error(request, 'ERROR')
+            except:
+                try: 
+                    TM500_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=ussername, domain=do_main, rack=txta, switch_port=sport, notes=txta, serial_number=s_n, product_number=p_n, asset_number=a_n)
+                    messages.success(request, 'Successfully Updated')
+                except:
+                    messages.error(request, 'ERROR')
+
+        elif operation == "del-indiv-tmpc":
+            dip = request.POST['deleteID']
+            print(dip)
+            try:
+                if TM500_PC.objects.filter(ip = dip).exists():
+                    TM500_PC.objects.get(ip = dip).delete()
+                    messages.success(request, 'Successfully Deleted')
+            except:
+                messages.error(request, 'Cannot Delete TM500 PC', extra_tags="tm500_del_error")
+
+        elif operation == "delete-tmpc":
+            server_list = request.POST.getlist('server_name')
+            if(len(server_list) < 1):
+                messages.error(request, 'Nothing to Delete - Nothing Selected')
+            else:
+                try: 
+                    for ip in server_list:
+                        print(ip)
+                        if TM500_PC.objects.filter(ip = ip).exists():
+                            print("delete?")
+                            TM500_PC.objects.get(ip = ip).delete()
+                    messages.success(request, 'Successfully Deleted')
+                except:
+                    messages.error(request, 'Cannot Delete TM500 PCs')
+
+        ##############################################################
+        ################### TM500 INFO OPERATIONS ####################
+        ##############################################################
+
+        elif operation == "add-tm-info":
+            server_name = request.POST['server_name']
+            sport = request.POST['sport']
+            txta = request.POST['txta']
+            rack = request.POST['rack']
+            s_n = request.POST['s_n']
+            p_n = request.POST['p_n']
+            a_n = request.POST['a_n']
+
+            try:
+                newTF = TM500_INFO(ip=server_name, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n)
+                newTF.save()
+                messages.success(request, "Successfully Added")
+            except:
+                messages.error(request, "Cannot ADD TM500 INFO")
+
+        elif operation == "update-tm-info":
+            server_name = request.POST['editID']
+            sport = request.POST['editSPort']
+            txta = request.POST['editNotes']
+            rack = request.POST['editRack']
+            s_n = request.POST['editSNum']
+            p_n = request.POST['editPNum']
+            a_n = request.POST['editANum']
+
+            try:
+                TM500_INFO.objects.filter(ip=server_name).update(switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n)
+                messages.success(request, "Successfully Updated")
+            except:
+                messages.error(request, "ERROR")
+
+        elif operation == "del-indiv-tm-info":
+            dip = request.POST['deleteID']
+            print(dip)
+            try:
+                if TM500_INFO.objects.filter(ip = dip).exists():
+                    TM500_INFO.objects.get(ip = dip).delete()
+                    messages.success(request, 'Successfully Deleted')
+            except:
+                messages.error(request, 'Cannot Delete TM500 INFO', extra_tags="tminfo_del_error")
+
+        elif operation == "delete-tminfo":
+            server_list = request.POST.getlist('server_name')
+            if(len(server_list) < 1):
+                messages.error(request, 'Nothing to Delete - Nothing Selected')
+            else:
+                try: 
+                    for ip in server_list:
+                        print(ip)
+                        if TM500_INFO.objects.filter(ip = ip).exists():
+                            print("delete?")
+                            TM500_INFO.objects.get(ip = ip).delete()
+                    messages.success(request, 'Successfully Deleted')
+                except:
+                    messages.error(request, 'Cannot Delete TM500 INFOs')
+
+
     context = {
         "getUE" : getUE,
         "getBTSPC" : getBTSPC,
         "getTMPC" : getTMPC,
         "getBTSINFO" : getBTSINFO,
         "getBTSMOD" : getBTSMOD,
+        "getTMINFO" : getTMINFO,
     }
     return render(request, 'index.html', context)
 
@@ -518,17 +746,263 @@ def ue(request):
     return render(request, 'ue.html', context)
 
 def racks(request):
-    #return render(request, 'racks.html')
-    getRacks = racksInfo.objects.all()
-    print("hello")
-    if request.method == 'POST': 
-        print("world")
-        image_data = request.POST['grr']
-        print(image_data)
-        newRack = racksInfo(rack_id='a1', rack_url=image_data)
-        newRack.save()
+    return render(request, 'racks.html')
 
-    context = {
-        "getRacks" : getRacks,
-    }
-    return render(request, 'racks.html', context)
+def exportCSV_BTSPC(request):
+    category_queryset = BTS_PC.objects.all()
+    response = HttpResponse(
+        content_type='application/ms-excel',
+    )
+    response['Content-Disposition'] = 'attachment; filename="bts-pc.xlsx"'
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Summary"
+
+    row = 1
+    col = 0
+
+    ws.cell(row=row, column=1).value = "IP"
+    ws.cell(row=row, column=2).value = "Display Name"
+    ws.cell(row=row, column=3).value = "Username"
+    ws.cell(row=row, column=4).value = "Password"
+    ws.cell(row=row, column=5).value = "Domain"
+    ws.cell(row=row, column=6).value = "BTS Info"
+    ws.cell(row=row, column=7).value = "UE Type"
+    ws.cell(row=row, column=8).value = "Rack"
+    ws.cell(row=row, column=9).value = "Test Terminal Info"
+    ws.cell(row=row, column=10).value = "TM500 Info"
+    ws.cell(row=row, column=11).value = "Switch Port"
+    ws.cell(row=row, column=12).value = "Serial No."
+    ws.cell(row=row, column=13).value = "Product No."
+    ws.cell(row=row, column=14).value = "Asset No."
+    ws.cell(row=row, column=15).value = "Notes"
+
+    row = 2
+    for rpc in category_queryset:
+        ws.cell(row=row, column=1).value = rpc.ip
+        ws.cell(row=row, column=2).value = rpc.display_name
+        ws.cell(row=row, column=3).value = rpc.username
+        ws.cell(row=row, column=4).value = rpc.password
+        ws.cell(row=row, column=5).value = rpc.domain
+        # bts
+        if rpc.bts_info_id is None:
+             ws.cell(row=row, column=6).value = ""
+        else:
+            ws.cell(row=row, column=6).value = rpc.bts_info_id.bts_name
+        ws.cell(row=row, column=7).value = rpc.ue_type
+        ws.cell(row=row, column=8).value = rpc.rack
+        # test terminal
+        if rpc.tt_info_id is None:
+             ws.cell(row=row, column=9).value = ""
+        else:
+            ws.cell(row=row, column=9).value = rpc.tt_info_id.bts_name
+        # tm500
+        if rpc.tm500_pc_id is None:
+             ws.cell(row=row, column=10).value = ""
+        else:
+            ws.cell(row=row, column=10).value = rpc.tm500_pc_id.ip
+        ws.cell(row=row, column=11).value = rpc.switch_port
+        ws.cell(row=row, column=12).value = rpc.serial_number
+        ws.cell(row=row, column=13).value = rpc.product_number
+        ws.cell(row=row, column=14).value = rpc.asset_number
+        ws.cell(row=row, column=15).value = rpc.notes
+        row = row + 1
+
+    bold_font = Font(bold=True)
+    for cell in ws["1:1"]:
+        cell.font = bold_font
+
+    wb.save(response)
+    return response
+
+def exportCSV_BTSINFO(request):
+    category_queryset = BTS_INFO.objects.all()
+    response = HttpResponse(
+        content_type='application/ms-excel',
+    )
+    response['Content-Disposition'] = 'attachment; filename="bts-info.xlsx"'
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Summary"
+
+    row = 1
+    col = 0
+
+    ws.cell(row=row, column=1).value = "ID"
+    ws.cell(row=row, column=2).value = "Name"
+    ws.cell(row=row, column=3).value = "Type"
+    ws.cell(row=row, column=4).value = "Use"
+    ws.cell(row=row, column=5).value = "Rack"
+    ws.cell(row=row, column=6).value = "Switch Port"
+    ws.cell(row=row, column=7).value = "Modules"
+    ws.cell(row=row, column=8).value = "Notes"
+
+    row = 2
+    for rpc in category_queryset:
+        ws.cell(row=row, column=1).value = rpc.i_d
+        ws.cell(row=row, column=2).value = rpc.bts_name
+        ws.cell(row=row, column=3).value = rpc.bts_type
+        ws.cell(row=row, column=4).value = rpc.bts_use
+        ws.cell(row=row, column=5).value = rpc.rack
+        ws.cell(row=row, column=6).value = rpc.switch_port
+
+        mod_queryset = BTS_MODULES.objects.all()
+        st = ""
+        for mm in mod_queryset:
+            if mm.bts_info_id.i_d == rpc.i_d:
+                st = st + str(mm.module_name)
+                st = st + "; "
+
+        ws.cell(row=row, column=7).value = st
+        ws.cell(row=row, column=8).value = rpc.notes
+        
+        row = row + 1
+
+    bold_font = Font(bold=True)
+    for cell in ws["1:1"]:
+        cell.font = bold_font
+
+    wb.save(response)
+    return response
+
+def exportCSV_BTSMOD(request):
+    category_queryset = BTS_MODULES.objects.all()
+    response = HttpResponse(
+        content_type='application/ms-excel',
+    )
+    response['Content-Disposition'] = 'attachment; filename="bts-modules.xlsx"'
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Summary"
+
+    row = 1
+    col = 0
+
+    ws.cell(row=row, column=1).value = "ID"
+    ws.cell(row=row, column=2).value = "BTS Info ID"
+    ws.cell(row=row, column=3).value = "Name"
+    ws.cell(row=row, column=4).value = "Brand"
+    ws.cell(row=row, column=5).value = "Serial No."
+    ws.cell(row=row, column=6).value = "Product No."
+    ws.cell(row=row, column=7).value = "Asset No."
+    ws.cell(row=row, column=8).value = "Notes"
+
+    row = 2
+    for rpc in category_queryset:
+        ws.cell(row=row, column=1).value = rpc.i_d
+
+        if rpc.bts_info_id is None:
+            ws.cell(row=row, column=2).value = ""
+        else:
+            ws.cell(row=row, column=2).value = rpc.bts_info_id.bts_name
+
+        ws.cell(row=row, column=3).value = rpc.module_name
+        ws.cell(row=row, column=4).value = rpc.module_brand
+        ws.cell(row=row, column=5).value = rpc.serial_number
+        ws.cell(row=row, column=6).value = rpc.product_number
+        ws.cell(row=row, column=7).value = rpc.asset_number
+        ws.cell(row=row, column=8).value = rpc.notes
+
+        row = row + 1
+
+    bold_font = Font(bold=True)
+    for cell in ws["1:1"]:
+        cell.font = bold_font
+
+    wb.save(response)
+    return response
+
+def exportCSV_TMPC(request):
+    category_queryset = TM500_PC.objects.all()
+    response = HttpResponse(
+        content_type='application/ms-excel',
+    )
+    response['Content-Disposition'] = 'attachment; filename="tm500-pc.xlsx"'
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Summary"
+
+    row = 1
+    col = 0
+
+    ws.cell(row=row, column=1).value = "IP"
+    ws.cell(row=row, column=2).value = "Display Name"
+    ws.cell(row=row, column=3).value = "Username"
+    ws.cell(row=row, column=4).value = "Password"
+    ws.cell(row=row, column=5).value = "Domain"
+    ws.cell(row=row, column=6).value = "TM500 Info IP"
+    ws.cell(row=row, column=7).value = "Rack"
+    ws.cell(row=row, column=8).value = "Switch Port"
+    ws.cell(row=row, column=9).value = "Serial No."
+    ws.cell(row=row, column=10).value = "Product No."
+    ws.cell(row=row, column=11).value = "Asset No."
+    ws.cell(row=row, column=12).value = "Notes"
+
+    row = 2
+    for rpc in category_queryset:
+        ws.cell(row=row, column=1).value = rpc.ip
+        ws.cell(row=row, column=2).value = rpc.display_name
+        ws.cell(row=row, column=3).value = rpc.username
+        ws.cell(row=row, column=4).value = rpc.password
+        ws.cell(row=row, column=5).value = rpc.domain
+
+        if rpc.tm500_info_id is None:
+            ws.cell(row=row, column=6).value = ""
+        else:
+            ws.cell(row=row, column=6).value = rpc.tm500_info_id.ip
+        
+        ws.cell(row=row, column=7).value = rpc.rack
+        ws.cell(row=row, column=8).value = rpc.switch_port
+        ws.cell(row=row, column=9).value = rpc.serial_number
+        ws.cell(row=row, column=10).value = rpc.product_number
+        ws.cell(row=row, column=11).value = rpc.asset_number
+        ws.cell(row=row, column=12).value = rpc.notes
+
+        row = row + 1
+
+    bold_font = Font(bold=True)
+    for cell in ws["1:1"]:
+        cell.font = bold_font
+
+    wb.save(response)
+    return response
+
+def exportCSV_TMINFO(request):
+    category_queryset = TM500_INFO.objects.all()
+    response = HttpResponse(
+        content_type='application/ms-excel',
+    )
+    response['Content-Disposition'] = 'attachment; filename="tm500-info.xlsx"'
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Summary"
+
+    row = 1
+    col = 0
+
+    ws.cell(row=row, column=1).value = "IP"
+    ws.cell(row=row, column=2).value = "Rack"
+    ws.cell(row=row, column=3).value = "Switch Port"
+    ws.cell(row=row, column=4).value = "Serial No."
+    ws.cell(row=row, column=5).value = "Product No."
+    ws.cell(row=row, column=6).value = "Asset No."
+    ws.cell(row=row, column=7).value = "Notes"
+
+    row = 2
+    for rpc in category_queryset:
+        ws.cell(row=row, column=1).value = rpc.ip
+        ws.cell(row=row, column=2).value = rpc.rack
+        ws.cell(row=row, column=3).value = rpc.switch_port
+        ws.cell(row=row, column=4).value = rpc.serial_number
+        ws.cell(row=row, column=5).value = rpc.product_number
+        ws.cell(row=row, column=6).value = rpc.asset_number
+        ws.cell(row=row, column=7).value = rpc.notes
+
+        row = row + 1
+
+    bold_font = Font(bold=True)
+    for cell in ws["1:1"]:
+        cell.font = bold_font
+
+    wb.save(response)
+    return response

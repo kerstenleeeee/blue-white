@@ -27,7 +27,7 @@
     <!-- main CSS -->
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <!-- style CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style-index.css' %}">
     <!-- responsive CSS -->
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     <!-- Font Awesome 5 -->
@@ -38,6 +38,22 @@
 
 <!-- Start style -->
 <style type="text/css">
+   .main .col-sm-12 .add-button button{
+    background-color: #15418f; 
+    color: white; 
+    border: 2px solid #15418f;
+    vertical-align: text-bottom;
+    float: right;
+    margin-left: 5px;
+}
+
+.main .col-sm-12 .add-button button:hover{
+    background-color: #eaf0f2;
+    color: #15418f;
+    border: 2px solid #eaf0f2;
+    vertical-align: text-bottom;
+    float: right;
+}
 </style>
 <!-- end style -->
 </head>
@@ -57,6 +73,7 @@
     <script src="{% static 'js/data-table/data-table-act-bts-info1.js' %}"></script>
     <script src="{% static 'js/data-table/data-table-act-bts-mod.js' %}"></script>
     <script src="{% static 'js/data-table/data-table-act-tm500.js' %}"></script>
+    <script src="{% static 'js/data-table/data-table-act-tm500-info.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
     <script type="application/javascript">
@@ -202,7 +219,24 @@
             $('#deleteIndvBTSMod').modal('show');
     });
     </script>
+    <script>
+        $(document).on("click", ".open-DeleteDialogTMPC", function () {
+            var ipd = $(this).data('id');
+            $(".modal-body #deleteID").val( ipd );
+            $(".modal-body #deleteIDp").val( ipd );
+            $('#deleteIndvTMPC').modal('show');
+    });
+    </script>
+    <script>
+        $(document).on("click", ".open-DeleteDialog-tm-info", function () {
+            var ipd = $(this).data('id');
+            $(".modal-body #deleteID").val( ipd );
+            $(".modal-body #deleteIDp").val( ipd );
+            $('#deleteIndvTMINFO').modal('show');
+    });
+    </script>
     <!--------- UPDATE MODAL DATA ---------->
+    <!-- Update BTS PC Modal Information -->
     <script>
         $(document).on("click", ".open-EditkDialog", function () { 
             var ipe = $(this).data('todo').id;
@@ -239,6 +273,7 @@
             $('#editBTSPC').modal('show');
     });
     </script>
+    <!-- Update BTS INFO Modal Information -->
     <script>
         $(document).on("click", ".open-EditiDialog", function () { 
             ///<a id="todolink" href="#editBTSINFO" class="open-EditiDialog btn btn-primary" data-toggle="modal" data-todo='{"id":"{{ rpc.i_d }}","name":"{{ rpc.bts_name }}","type":"{{ rpc.bts_type }}","usee":"{{ rpc.bts_use }}","rck":"{{ rpc.rack }}","sport":"{{ rpc.switch_port }}","nt":"{{ rpc.notes }}"}'
@@ -283,6 +318,7 @@
             $('#editBTSINFO').modal('show');
     });
     </script>
+    <!-- Update BTS Module Modal Information -->
     <script>
         $(document).on("click", ".open-EditmDialog", function () { 
             //="todolink" href="#editBTSMOD" class="open-EditmDialog btn btn-primary" data-toggle="modal" 
@@ -306,7 +342,376 @@
             $('#editBTSMOD').modal('show');
     });
     </script>
+    <!-- Update TM500 PC Modal Information -->
+    <script>
+        $(document).on("click", ".open-EdittDialog", function () { 
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').name;
+            var une = $(this).data('todo').uname;
+            var pwe = $(this).data('todo').pword;
+            var dme = $(this).data('todo').dmn;
+            var ar = $(this).data('todo').ar;
+            var swort = $(this).data('todo').swort;
+            var esnum = $(this).data('todo').esnum;
+            var pinum = $(this).data('todo').pinum;
+            var asnum = $(this).data('todo').asnum;
+            var nonot = $(this).data('todo').nonot;
+            var tiem = $(this).data('todo').tiem;
+            // window.alert(nonot);
+            $(".modal-body #editID").val( ipe );
+            $(".modal-body #editDN").val( dne );
+            $(".modal-body #editUN").val( une );
+            $(".modal-body #editPW").val( pwe );
+            $(".modal-body #editDM").val( dme );
+            $(".modal-body #editRack").val( ar );
+            $(".modal-body #editSPort").val( swort );
+            $(".modal-body #editSNum").val( esnum );
+            $(".modal-body #editPNum").val( pinum );
+            $(".modal-body #editANum").val( asnum );
+            $(".modal-body #editNotes").val( nonot );
+            $(".modal-body #editT5").val( tiem );
+            $('#editTMPC').modal('show');
+    });
+    </script>
+    <!-- Update TM500 Info Modal Information -->
+    <script>
+        $(document).on("click", ".open-EditfDialog", function () { 
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').name;
+            var une = $(this).data('todo').uname;
+            var pwe = $(this).data('todo').pword;
+            var dme = $(this).data('todo').dmn;
+            var ar = $(this).data('todo').ar;
+            var swort = $(this).data('todo').swort;
+            var esnum = $(this).data('todo').esnum;
+            var pinum = $(this).data('todo').pinum;
+            var asnum = $(this).data('todo').asnum;
+            var nonot = $(this).data('todo').nonot;
+            var tiem = $(this).data('todo').tiem;
+            // window.alert(nonot);
+            $(".modal-body #editID").val( ipe );
+            $(".modal-body #editRack").val( ar );
+            $(".modal-body #editSPort").val( swort );
+            $(".modal-body #editSNum").val( esnum );
+            $(".modal-body #editPNum").val( pinum );
+            $(".modal-body #editANum").val( asnum );
+            $(".modal-body #editNotes").val( nonot );
+            $('#editTMINFO').modal('show');
+    });
+    </script>
     <!------------- INFO ---------------------->
+    <script>
+        $(document).on("click", ".open-ShowBTSInfo", function () { 
+            //}}","notes":"{{ rpc.bts_info_id.notes }}", "mod1":"{{ rpc.bts_mod1 }}", "mod2":"{{ rpc.bts_mod2 }}", "mod3":"{{ rpc.bts_mod3 }}", "mod1brand":"{{rpc.bts_mod1.module_brand}}", "mod2brand":"{{rpc.bts_mod2.module_brand}}", "mod3brand":"{{rpc.bts_mod3.module_brand}}", "mod1sn":"{{rpc.bts_mod1.serial_number}}", "mod2sn":"{{rpc.bts_mod2.serial_number}}", "mod3sn":"{{rpc.bts_mod3.serial_number}}", "mod1pn":"{{rpc.bts_mod1.product_number}}", "mod2pn":"{{rpc.bts_mod2.product_number}}", "mod3pn":"{{rpc.bts_mod3.product_number}}", "mod1an":"{{rpc.bts_mod1.asset_number}}" , "mod2an":"{{rpc.bts_mod2.asset_number}}" , "mod3an":"{{rpc.bts_mod3.asset_number}}" , "mod1notes":"{{rpc.bts_mod1.notes}}", "mod2notes":"{{rpc.bts_mod2.notes}}", "mod3notes":"{{rpc.bts_mod3.notes}}"}'
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').name;
+            var une = $(this).data('todo').type;
+            var pwe = $(this).data('todo').use;
+            var dme = $(this).data('todo').rack;
+            var bte = $(this).data('todo').sport;
+            var uee = $(this).data('todo').notes;
+            // one
+            var md1 = $(this).data('todo').mod1;
+            if(md1.length > 1){
+                if (md1 != "None"){
+                    var md1b = $(this).data('todo').mod1brand;
+                    var md1s = $(this).data('todo').mod1sn;
+                    var md1p = $(this).data('todo').mod1pn;
+                    var md1a = $(this).data('todo').mod1an;
+                    var md1n = $(this).data('todo').mod1notes;
+                    $(".modal-body #showMod1").val( md1 );
+                    $(".modal-body #showMod1B").val( md1b );
+                    $(".modal-body #showMod1S").val( md1s );
+                    $(".modal-body #showMod1P").val( md1p );
+                    $(".modal-body #showMod1A").val( md1a );
+                    $(".modal-body #showMod1N").val( md1n );
+                    document.getElementById("mod1label").style.display = 'block';
+                    document.getElementById("mod1blabel").style.display = 'block';
+                    document.getElementById("mod1slabel").style.display = 'block';
+                    document.getElementById("mod1plabel").style.display = 'block';
+                    document.getElementById("mod1alabel").style.display = 'block';
+                    document.getElementById("mod1nlabel").style.display = 'block';
+                }
+                else{
+                    document.getElementById("mod1label").style.display = 'none';
+                    document.getElementById("mod1blabel").style.display = 'none';
+                    document.getElementById("mod1slabel").style.display = 'none';
+                    document.getElementById("mod1plabel").style.display = 'none';
+                    document.getElementById("mod1alabel").style.display = 'none';
+                    document.getElementById("mod1nlabel").style.display = 'none';
+                }
+            }
+            // two
+            var md2 = $(this).data('todo').mod2;
+            if (md2.length > 1) {
+                if (md2 != "None") {
+                    //window.alert(md2);
+                    var md2b = $(this).data('todo').mod2brand;
+                    var md2s = $(this).data('todo').mod2sn;
+                    var md2p = $(this).data('todo').mod2pn;
+                    var md2a = $(this).data('todo').mod2an;
+                    var md2n = $(this).data('todo').mod2notes;
+                    $(".modal-body #showMod2").val( md2 );
+                    $(".modal-body #showMod2B").val( md2b );
+                    $(".modal-body #showMod2S").val( md2s );
+                    $(".modal-body #showMod2P").val( md2p );
+                    $(".modal-body #showMod2A").val( md2a );
+                    $(".modal-body #showMod2N").val( md2n );
+                    document.getElementById("mod2label").style.display = 'block';
+                    document.getElementById("mod2blabel").style.display = 'block';
+                    document.getElementById("mod2slabel").style.display = 'block';
+                    document.getElementById("mod2plabel").style.display = 'block';
+                    document.getElementById("mod2alabel").style.display = 'block';
+                    document.getElementById("mod2nlabel").style.display = 'block';
+                }
+                else{
+                    document.getElementById("mod2label").style.display = 'none';
+                    document.getElementById("mod2blabel").style.display = 'none';
+                    document.getElementById("mod2slabel").style.display = 'none';
+                    document.getElementById("mod2plabel").style.display = 'none';
+                    document.getElementById("mod2alabel").style.display = 'none';
+                    document.getElementById("mod2nlabel").style.display = 'none';
+                }
+            }
+            // three
+            var md3 = $(this).data('todo').mod3;
+            if(md3.length > 1){
+                if (md3 != "None"){
+                    var md3b = $(this).data('todo').mod3brand;
+                    var md3s = $(this).data('todo').mod3sn;
+                    var md3p = $(this).data('todo').mod3pn;
+                    var md3a = $(this).data('todo').mod3an;
+                    var md3n = $(this).data('todo').mod3notes;
+                    $(".modal-body #showMod3").val( md3 );
+                    $(".modal-body #showMod3B").val( md3b );
+                    $(".modal-body #showMod3S").val( md3s );
+                    $(".modal-body #showMod3P").val( md3p );
+                    $(".modal-body #showMod3A").val( md3a );
+                    $(".modal-body #showMod13N").val( md3n );
+                    //mod3label
+                    document.getElementById("mod3label").style.display = 'block';
+                    document.getElementById("mod3blabel").style.display = 'block';
+                    document.getElementById("mod3slabel").style.display = 'block';
+                    document.getElementById("mod3plabel").style.display = 'block';
+                    document.getElementById("mod3alabel").style.display = 'block';
+                    document.getElementById("mod3nlabel").style.display = 'block';
+                }
+                else{
+                    document.getElementById("mod3label").style.display = 'none';
+                    document.getElementById("mod3blabel").style.display = 'none';
+                    document.getElementById("mod3slabel").style.display = 'none';
+                    document.getElementById("mod3plabel").style.display = 'none';
+                    document.getElementById("mod3alabel").style.display = 'none';
+                    document.getElementById("mod3nlabel").style.display = 'none';
+                }
+            }
+            $(".modal-body #showID").val( ipe );
+            $(".modal-body #showName").val( dne );
+            $(".modal-body #showType").val( une );
+            $(".modal-body #showUse").val( pwe );
+            $(".modal-body #showRack").val( dme );
+            $(".modal-body #showSport").val( bte );
+            $(".modal-body #showNotes").val( uee );
+            $('#showBTSINFO').modal('show');
+    });
+    </script>
+    <script>
+        $(document).on("click", ".open-ShowTTInfo", function () { 
+            //'{"id":"{{ rpc.bts_info_id.i_d }}","name":"{{ rpc.bts_info_id.bts_name }}","type":"{{ rpc.bts_info_id.bts_type }}","use":"{{ rpc.bts_info_id.bts_use }}","rack":"{{ rpc.bts_info_id.rack }}","sport":"{{ rpc.bts_info_id.switch_port }}","notes":"{{ rpc.bts_info_id.notes }}"}
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').name;
+            var une = $(this).data('todo').type;
+            var pwe = $(this).data('todo').use;
+            var dme = $(this).data('todo').rack;
+            var bte = $(this).data('todo').sport;
+            var uee = $(this).data('todo').notes;
+            var mod1 = $("#mod1-ShowInfo").text();
+            //window.alert(mod1);
+            // window.alert(nonot);
+
+            var md1 = $(this).data('todo').mod1;
+            if(md1.length > 1){
+                if (md1 != "None"){
+                    var md1b = $(this).data('todo').mod1brand;
+                    var md1s = $(this).data('todo').mod1sn;
+                    var md1p = $(this).data('todo').mod1pn;
+                    var md1a = $(this).data('todo').mod1an;
+                    var md1n = $(this).data('todo').mod1notes;
+                    //window.alert(md1);
+                    $(".modal-body #showTT1").val( md1 );
+                    $(".modal-body #showTT1B").val( md1b );
+                    $(".modal-body #showTT1S").val( md1s );
+                    $(".modal-body #showTT1P").val( md1p );
+                    $(".modal-body #showTT1A").val( md1a );
+                    $(".modal-body #showTT1N").val( md1n );
+                    document.getElementById("tt1label").style.display = 'block';
+                    document.getElementById("tt1blabel").style.display = 'block';
+                    document.getElementById("tt1slabel").style.display = 'block';
+                    document.getElementById("tt1plabel").style.display = 'block';
+                    document.getElementById("tt1alabel").style.display = 'block';
+                    document.getElementById("tt1nlabel").style.display = 'block';
+                }
+                else{
+                    document.getElementById("tt1label").style.display = 'none';
+                    document.getElementById("tt1blabel").style.display = 'none';
+                    document.getElementById("tt1slabel").style.display = 'none';
+                    document.getElementById("tt1plabel").style.display = 'none';
+                    document.getElementById("tt1alabel").style.display = 'none';
+                    document.getElementById("tt1nlabel").style.display = 'none';
+                }
+            }
+            // two
+            var md2 = $(this).data('todo').mod2;
+            if (md2.length > 1) {
+                if (md2 != "None") {
+                    //window.alert(md2);
+                    var md2b = $(this).data('todo').mod2brand;
+                    var md2s = $(this).data('todo').mod2sn;
+                    var md2p = $(this).data('todo').mod2pn;
+                    var md2a = $(this).data('todo').mod2an;
+                    var md2n = $(this).data('todo').mod2notes;
+                    $(".modal-body #showTT2").val( md2 );
+                    $(".modal-body #showTT2B").val( md2b );
+                    $(".modal-body #showTT2S").val( md2s );
+                    $(".modal-body #showTT2P").val( md2p );
+                    $(".modal-body #showTT2A").val( md2a );
+                    $(".modal-body #showTT2N").val( md2n );
+                    document.getElementById("tt2label").style.display = 'block';
+                    document.getElementById("tt2blabel").style.display = 'block';
+                    document.getElementById("tt2slabel").style.display = 'block';
+                    document.getElementById("tt2plabel").style.display = 'block';
+                    document.getElementById("tt2alabel").style.display = 'block';
+                    document.getElementById("tt2nlabel").style.display = 'block';
+                }
+                else{
+                    document.getElementById("tt2label").style.display = 'none';
+                    document.getElementById("tt2blabel").style.display = 'none';
+                    document.getElementById("tt2slabel").style.display = 'none';
+                    document.getElementById("tt2plabel").style.display = 'none';
+                    document.getElementById("tt2alabel").style.display = 'none';
+                    document.getElementById("tt2nlabel").style.display = 'none';
+                }
+            }
+            // three
+            var md3 = $(this).data('todo').mod3;
+            if(md3.length > 1){
+                if (md3 != "None"){
+                    var md3b = $(this).data('todo').mod3brand;
+                    var md3s = $(this).data('todo').mod3sn;
+                    var md3p = $(this).data('todo').mod3pn;
+                    var md3a = $(this).data('todo').mod3an;
+                    var md3n = $(this).data('todo').mod3notes;
+                    $(".modal-body #showTT3").val( md3 );
+                    $(".modal-body #showTT3B").val( md3b );
+                    $(".modal-body #showTT3S").val( md3s );
+                    $(".modal-body #showTT3P").val( md3p );
+                    $(".modal-body #showTT3A").val( md3a );
+                    $(".modal-body #showTT3N").val( md3n );
+                    document.getElementById("tt3label").style.display = 'block';
+                    document.getElementById("tt3blabel").style.display = 'block';
+                    document.getElementById("tt3slabel").style.display = 'block';
+                    document.getElementById("tt3plabel").style.display = 'block';
+                    document.getElementById("tt3alabel").style.display = 'block';
+                    document.getElementById("tt3nlabel").style.display = 'block';
+                }
+                else{
+                    document.getElementById("tt3label").style.display = 'none';
+                    document.getElementById("tt3blabel").style.display = 'none';
+                    document.getElementById("tt3slabel").style.display = 'none';
+                    document.getElementById("tt3plabel").style.display = 'none';
+                    document.getElementById("tt3alabel").style.display = 'none';
+                    document.getElementById("tt3nlabel").style.display = 'none';
+                }
+            }
+            $(".modal-body #showID").val( ipe );
+            $(".modal-body #showName").val( dne );
+            $(".modal-body #showType").val( une );
+            $(".modal-body #showUse").val( pwe );
+            $(".modal-body #showRack").val( dme );
+            $(".modal-body #showSport").val( bte );
+            $(".modal-body #showNotes").val( uee );
+            $('#showTTINFO').modal('show');
+    });
+    </script>
+    <script>
+        $(document).on("click", ".open-ShowTMInfo", function () { 
+            //'{"id":"{{ rpc.bts_info_id.i_d }}","name":"{{ rpc.bts_info_id.bts_name }}","type":"{{ rpc.bts_info_id.bts_type }}","use":"{{ rpc.bts_info_id.bts_use }}","rack":"{{ rpc.bts_info_id.rack }}","sport":"{{ rpc.bts_info_id.switch_port }}","notes":"{{ rpc.bts_info_id.notes }}"}
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').name;
+            var une = $(this).data('todo').uname;
+            var pwe = $(this).data('todo').pword;
+            var dme = $(this).data('todo').dmn;
+            var bte = $(this).data('todo').bites;
+            var ar = $(this).data('todo').ar;
+            var swort = $(this).data('todo').swort;
+            var esnum = $(this).data('todo').esnum;
+            var pinum = $(this).data('todo').pinum;
+            var asnum = $(this).data('todo').asnum;
+            var nonot = $(this).data('todo').nonot;
+            $(".modal-body #showID").val( ipe );
+            $(".modal-body #showName").val( dne );
+            $(".modal-body #showUN").val( une );
+            $(".modal-body #showPass").val( pwe );
+            $(".modal-body #showDomain").val( dme );
+            $(".modal-body #showT5").val( bte );
+            $(".modal-body #showRack").val( ar );
+            $(".modal-body #showSport").val( swort );
+            $(".modal-body #shwoSN").val( esnum );
+            $(".modal-body #showPN").val( pinum );
+            $(".modal-body #showAN").val( asnum );
+            $(".modal-body #showNotes").val( nonot );
+            $('#showTMINFO').modal('show');
+    });
+    </script>
+    <script>
+        $(document).on("click", ".open-showModInfo", function () { 
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').name;
+            var une = $(this).data('todo').bts;
+            var pwe = $(this).data('todo').brand;
+            var dme = $(this).data('todo').sn;
+            var bte = $(this).data('todo').pn;
+            var ar = $(this).data('todo').an;
+            var swort = $(this).data('todo').notes;
+            $(".modal-body #showID").val( ipe );
+            $(".modal-body #showName").val( dne );
+            $(".modal-body #showUN").val( une );
+            $(".modal-body #showPass").val( pwe );
+            $(".modal-body #showDomain").val( dme );
+            $(".modal-body #showT5").val( bte );
+            $(".modal-body #showRack").val( ar );
+            $(".modal-body #showSport").val( swort );
+            $('#showModInfo').modal('show');
+    });
+    </script>
+    <script>
+        $(document).on("click", ".open-showTINFO", function () { 
+            var ipe = $(this).data('todo').id;
+            var dne = $(this).data('todo').rack;
+            var une = $(this).data('todo').sport;
+            var pwe = $(this).data('todo').notes;
+            var dme = $(this).data('todo').sn;
+            var bte = $(this).data('todo').pn;
+            var ar = $(this).data('todo').an;
+            $(".modal-body #showID").val( ipe );
+            $(".modal-body #showName").val( dne );
+            $(".modal-body #showUN").val( une );
+            $(".modal-body #showPass").val( pwe );
+            $(".modal-body #showDomain").val( dme );
+            $(".modal-body #showT5").val( bte );
+            $(".modal-body #showRack").val( ar );
+            $(".modal-body #showSport").val( swort );
+            $('#showTINFO').modal('show');
+    });
+    </script>
+    <script>
+        $(document).ready(function(){
+            var mod1 = $("mod1-ShowInfo").data('todo').id;
+            windo.alert(mod1);
+            $('#successModal').modal({show:true});
+        });
+    </script>
+    <!------------- Fetch Buttons --------------->
     <script>
         $(document).on("click", ".open-info", function () {
             var ipd = $(this).data('todo').id;
@@ -315,9 +720,8 @@
             $(".col-sm-6 #bts_server").val( ipd );
             $(".col-sm-6 #bts_username").val( und );
             $(".col-sm-6 #bts_password").val( pdd );
-    });
+        });
     </script>
-    <!------------- Show Info --------------->
     <script>
         jQuery(document).ready(function(){
             jQuery('#btsInfoButton').on('click', function(event) {        
@@ -334,6 +738,103 @@
                 container.hide();
             }
         });
+    </script>
+    <!-------------------- EXPORT TABLE ------------------------->
+    <script type="text/javascript">
+        var xport = {
+        _fallbacktoCSV: true,  
+        toXLS: function(tableId, filename) {
+            this._filename = (typeof filename == 'undefined') ? tableId : filename;
+            
+            if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+                return this.toCSV(tableId, filename);
+            } else if (this._getMsieVersion() || this._isFirefox()) {
+                alert("Not supported browser");
+            }
+
+            //Other Browser can download xls
+            var htmltable = document.getElementById(tableId);
+            var html = htmltable.outerHTML;
+
+            this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls'); 
+        },
+        toCSV: function(tableId, filename) {
+            this._filename = (typeof filename === 'undefined') ? tableId : filename;
+            // Generate our CSV string from out HTML Table
+            var csv = this._tableToCSV(document.getElementById(tableId));
+            // Create a CSV Blob
+            var blob = new Blob([csv], { type: "text/csv" });
+
+            // Determine which approach to take for the download
+            if (navigator.msSaveOrOpenBlob) {
+              // Works for Internet Explorer and Microsoft Edge
+                navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
+            } else {      
+                this._downloadAnchor(URL.createObjectURL(blob), 'csv');      
+            }
+        },
+        _getMsieVersion: function() {
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0) {
+              // IE 10 or older => return version number
+                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+            }
+
+            var trident = ua.indexOf("Trident/");
+            if (trident > 0) {
+              // IE 11 => return version number
+                var rv = ua.indexOf("rv:");
+                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+            }
+
+            var edge = ua.indexOf("Edge/");
+            if (edge > 0) {
+              // Edge (IE 12+) => return version number
+                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+            }
+
+            // other browser
+            return false;
+        },
+        _isFirefox: function(){
+            if (navigator.userAgent.indexOf("Firefox") > 0) {
+                return 1;
+            }
+            return 0;
+        },
+        _downloadAnchor: function(content, ext) {
+            var anchor = document.createElement("a");
+            anchor.style = "display:none !important";
+            anchor.id = "downloadanchor";
+            document.body.appendChild(anchor);
+
+            // If the [download] attribute is supported, try to use it
+              
+            if ("download" in anchor) {
+                anchor.download = this._filename + "." + ext;
+            }
+            anchor.href = content;
+            anchor.click();
+            anchor.remove();
+          },
+          _tableToCSV: function(table) {
+            // We'll be co-opting `slice` to create arrays
+            var slice = Array.prototype.slice;
+
+            return slice
+                .call(table.rows)
+                .map(function(row) {
+                    return slice
+                    .call(row.cells)
+                    .map(function(cell) {
+                    return '"t"'.replace("t", cell.textContent);
+                  })
+                  .join(",");
+            })
+            .join("\r\n");
+        }
+    };
     </script>
     <!-----------------------------------------------------
     ---------------------- SCRIPTS ------------------------
@@ -353,15 +854,16 @@
                     </div>
                 </a>
                 <div class="new-div">
-                    <a href="{% url 'ueView' %}">UE</a>
-                    <a href="{% url 'btsView' %}">BTS</a>
+                    <!--<a href="{% url 'ueView' %}">UE</a>
+                    <a href="{% url 'btsView' %}">BTS</a>-->
                 </div>
             </div>
         </div>
     </div>
 
+    
     <div class="main">
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <div class="container" id="exTab3">
                 <ul class="nav nav-pills">
                     <li class="active">
@@ -373,53 +875,89 @@
                     <li>
                         <a href="#3b" data-toggle="tab"><strong>BTS MODULES</strong></a>
                     </li>
+                    <li>
+                        <a href="#4b" data-toggle="tab"><strong>TM500 PC</strong></a>
+                    </li>
+                    <li>
+                        <a href="#5b" data-toggle="tab"><strong>TM500 INFO</strong></a>
+                    </li>
                 </ul>
-                <div class="tab-content clearfix">
+                <hr style="position: relative; top: -15px; background-color: #15418f; height: 2px">
+                <div class="tab-content clearfix" style="position: relative; top: -25px">
+                    <!-- CONTENTS OF BTS PC TAB -->
                     <div class="tab-pane active" id="1b">
-                        <div class="add-button" style="padding-top: 0px">
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addBTSPC"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteBTSPC"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                        <!-- onclick="javascript:xport.toXLS('data-table-basic', 'bts-pc');" -->
+                        <div class="add-button" style="padding: 0px; margin: 0px">
+                            <form action="exportBTSPC">
+                                <button type="submit" class="btn btn-primary btn-sm" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                            </form>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addBTSPC" title="Add New BTS PC"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteBTSPC" title="Remove BTS PC"><i class="fa fa-minus" aria-hidden="true"></i></button>
                         </div>
                         <table id="data-table-basic" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
                             <thead>
                                 <tr>
-                                    <th> IP </th>
-                                    <th> Display Name </th>
-                                    <th style="display: "> Username </th>
-                                    <th style="display: "> Password </th>
-                                    <th style="display: "> Domain </th>
-                                    <th style="display: "> BTS Info </th>
-                                    <th style="display: "> UE Type </th>
-                                    <th style="display: "> Rack </th>
-                                    <th style="display: "> Test Terminal Info </th>
-                                    <th style="display: "> TM500 Info </th>
-                                    <th style="display: "> Switch Port </th>
-                                    <th style="display: "> Serial No. </th>
-                                    <th style="display: "> Product No. </th>
-                                    <th style="display: "> Asset No. </th>
-                                    <th style="display: "> Notes </th>
+                                    <th style="text-align: center;"> IP </th>
+                                    <th style="text-align: center;"> Display Name </th>
+                                    <th style="text-align: center;"> Username </th>
+                                    <th style="text-align: center;"> Password </th>
+                                    <th style="text-align: center;"> Domain </th>
+                                    <th style="text-align: center;"> BTS Info </th>
+                                    <th style="text-align: center;"> UE Type </th>
+                                    <th style="text-align: center;"> Rack </th>
+                                    <th style="text-align: center;"> Test Terminal Info </th>
+                                    <th style="text-align: center;"> TM500 Info </th>
+                                    <th style="text-align: center;"> Switch Port </th>
+                                    <th style="text-align: center;"> Serial No. </th>
+                                    <th style="text-align: center;"> Product No. </th>
+                                    <th style="text-align: center;"> Asset No. </th>
+                                    <th style="text-align: center;"> Notes </th>
                                     <th style="width: 5%"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for rpc in getBTSPC %}
                                     <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
-                                        <td class="element">{{ rpc.ip }}</td>
-                                        <td class="element">{{ rpc.display_name }}</td>
-                                        <td class="element" style="display: ">{{ rpc.username }}</td>
-                                        <td class="element" style="display: ">{{ rpc.password }}</td>
-                                        <td class="element" style="display: ">{{ rpc.domain }}</td>
-                                        <td class="element">{{ rpc.bts_info_id }}</td>
-                                        <td class="element">{{ rpc.ue_type }}</td>
-                                        <td class="element" style="display: ">{{ rpc.rack }}</td>
-                                        <td class="element" style="display: ">{{ rpc.tt_info_id }}</td>
-                                        <td class="element" style="display: ">{{ rpc.tm500_pc_id }}</td>
-                                        <td class="element" style="display: ">{{ rpc.switch_port }}</td>
-                                        <td class="element" style="display: ">{{ rpc.serial_number }}</td>
-                                        <td class="element" style="display: ">{{ rpc.product_number }}</td>
-                                        <td class="element" style="display: ">{{ rpc.asset_number }}</td>
-                                        <td class="element" style="display: ">{{ rpc.notes }}</td>
-                                        <td class="element" style="width: 10%">
+                                        <td class="element" style="text-align: center;">{{ rpc.ip }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.display_name }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.username }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.password }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.domain }}</td>
+                                        <td class="element" style="text-align: center;" >
+                                            <a href="#showBTSINFO" class="open-ShowBTSInfo" data-toggle="modal" data-todo='{"id":"{{ rpc.bts_info_id.i_d }}","name":"{{ rpc.bts_info_id.bts_name }}","type":"{{ rpc.bts_info_id.bts_type }}","use":"{{ rpc.bts_info_id.bts_use }}","rack":"{{ rpc.bts_info_id.rack }}","sport":"{{ rpc.bts_info_id.switch_port }}","notes":"{{ rpc.bts_info_id.notes }}", "mod1":"{{ rpc.bts_mod1 }}", "mod2":"{{ rpc.bts_mod2 }}", "mod3":"{{ rpc.bts_mod3 }}", "mod1brand":"{{rpc.bts_mod1.module_brand}}", "mod2brand":"{{rpc.bts_mod2.module_brand}}", "mod3brand":"{{rpc.bts_mod3.module_brand}}", "mod1sn":"{{rpc.bts_mod1.serial_number}}", "mod2sn":"{{rpc.bts_mod2.serial_number}}", "mod3sn":"{{rpc.bts_mod3.serial_number}}", "mod1pn":"{{rpc.bts_mod1.product_number}}", "mod2pn":"{{rpc.bts_mod2.product_number}}", "mod3pn":"{{rpc.bts_mod3.product_number}}", "mod1an":"{{rpc.bts_mod1.asset_number}}" , "mod2an":"{{rpc.bts_mod2.asset_number}}" , "mod3an":"{{rpc.bts_mod3.asset_number}}" , "mod1notes":"{{rpc.bts_mod1.notes}}", "mod2notes":"{{rpc.bts_mod2.notes}}", "mod3notes":"{{rpc.bts_mod3.notes}}"}' style="text-decoration: none; color: black" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';">
+                                                {{ rpc.bts_info_id }}
+                                                <!--{{ rpc.bts_mod1 }}
+                                                {{ rpc.bts_mod2 }}
+                                                {{ rpc.bts_mod3 }}-->
+                                            </a>
+                                        </td>
+                                        <td class="element" style="text-align: center;">{{ rpc.ue_type }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.rack }}</td>
+                                        <td class="element" style="text-align: center;">
+                                            <a href="#showTTINFO" class="open-ShowTTInfo" data-toggle="modal" data-todo='{"id":"{{ rpc.tt_info_id.i_d }}","name":"{{ rpc.tt_info_id.bts_name }}","type":"{{ rpc.tt_info_id.bts_type }}","use":"{{ rpc.tt_info_id.bts_use }}","rack":"{{ rpc.tt_info_id.rack }}","sport":"{{ rpc.tt_info_id.switch_port }}","notes":"{{ rpc.tt_info_id.notes }}", "mod1":"{{ rpc.tt_mod1 }}", "mod2":"{{ rpc.tt_mod2 }}", "mod3":"{{ rpc.tt_mod3 }}", "mod1brand":"{{rpc.tt_mod1.module_brand}}", "mod2brand":"{{rpc.tt_mod2.module_brand}}", "mod3brand":"{{rpc.tt_mod3.module_brand}}", "mod1sn":"{{rpc.tt_mod1.serial_number}}", "mod2sn":"{{rpc.tt_mod2.serial_number}}", "mod3sn":"{{rpc.tt_mod3.serial_number}}", "mod1pn":"{{rpc.tt_mod1.product_number}}", "mod2pn":"{{rpc.tt_mod2.product_number}}", "mod3pn":"{{rpc.tt_mod3.product_number}}", "mod1an":"{{rpc.tt_mod1.asset_number}}" , "mod2an":"{{rpc.tt_mod2.asset_number}}" , "mod3an":"{{rpc.tt_mod3.asset_number}}" , "mod1notes":"{{rpc.tt_mod1.notes}}", "mod2notes":"{{rpc.tt_mod2.notes}}", "mod3notes":"{{rpc.tt_mod3.notes}}"}' style="text-decoration: none; color: black" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';">
+                                                {% if rpc.tt_info_id != None %}
+                                                    {{ rpc.tt_info_id }}
+                                                {% endif %}
+                                                <!--{{ rpc.tt_mod1 }}
+                                                {{ rpc.tt_mod2 }}
+                                                {{ rpc.tt_mod3 }}-->
+                                            </a>
+                                        </td>
+                                        <td class="element" style="text-align: center;">
+                                        <a href="#showTMINFO" class="open-ShowTMInfo" data-toggle="modal" data-todo='{"id":"{{ rpc.tm500_pc_id.ip }}","name":"{{ rpc.tm500_pc_id.display_name }}","uname":"{{ rpc.tm500_pc_id.username }}","pword":"{{ rpc.tm500_pc_id.password }}","dmn":"{{ rpc.tm500_pc_id.domain }}","bites":"{{ rpc.tm500_pc_id.tm500_info_id }}","ar":"{{ rpc.tm500_pc_id.rack }}", "swort":"{{ rpc.tm500_pc_id.switch_port }}", "esnum":"{{ rpc.tm500_pc_id.serial_number }}", "pinum":"{{ rpc.tm500_pc_id.product_number }}", "asnum":"{{ rpc.tm500_pc_id.asset_number }}", "nonot":"{{ rpc.tm500_pc_id.notes }}"}'  style="text-decoration: none; color: black" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';">
+                                                {% if rpc.tm500_pc_id != None %}
+                                                    {{ rpc.tm500_pc_id }}
+                                                {% endif %}
+                                                
+                                            </a>
+                                        </td>
+
+                                        <td class="element" style="text-align: center;">{{ rpc.switch_port }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.serial_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.product_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.asset_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.notes }}</td>
+                                        <td class="element" style="width: 5%">
                                         <a data-toggle="modal" data-id="{{ rpc.ip }}" data-toggle="modal" class="open-DeleteDialog btn btn-primary" href="#deleteIndvBTSPC" 
                                         onmouseover="this.style.color='#15418f';" 
                                         onmouseout="this.style.color='black';" 
@@ -436,45 +974,56 @@
                             </tbody>
                         </table>
                     </div>
+                    <!-- CONTENTS OF BTS INFO TAB -->
                 <div class="tab-pane" id="2b">
                     <div class="add-button" style="padding-top: 0px">
+                            <form action="exportBTSINFO">
+                                <button type="submit" class="btn btn-primary btn-sm" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                            </form>
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addBTSINFO"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteBTSINFO"><i class="fa fa-minus" aria-hidden="true"></i></button>
                         </div>
                         <table id="data-table-basic-info" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
                             <thead>
                                 <tr>
-                                    <th> ID </th>
-                                    <th> Name </th>
-                                    <th style="display: "> Type </th>
-                                    <th style="display: "> Use </th>
-                                    <th style="display: "> Rack </th>
-                                    <th style="display: "> Switch Port </th>
-                                    <th style="display: "> Modules </th>
-                                    <th style="display: "> Notes </th>
+                                    <th style="text-align: center;"> ID </th>
+                                    <th style="text-align: center;"> Name </th>
+                                    <th style="text-align: center;"> Type </th>
+                                    <th style="text-align: center;"> Use </th>
+                                    <th style="text-align: center;"> Rack </th>
+                                    <th style="text-align: center;"> Switch Port </th>
+                                    <th style="text-align: center;"> Modules </th>
+                                    <th style="text-align: center;"> Notes </th>
                                     <th style="width: 5%"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for rpc in getBTSINFO %}
-                                    <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
-                                        <td class="element">{{ rpc.i_d }}</td>
-                                        <td class="element">{{ rpc.bts_name }}</td>
-                                        <td class="element" style="display: ">{{ rpc.bts_type }}</td>
-                                        <td class="element" style="display: ">{{ rpc.bts_use }}</td>
-                                        <td class="element" style="display: ">{{ rpc.rack }}</td>
-                                        <td class="element">{{ rpc.switch_port }}</td>
-                                        <td>
+                                    <tr>
+                                        <!--  id="todolink" href="#showModInfo" class="open-showModInfo" data-toggle="modal" data-todo='{"id":"{{ rpc.i_d }}","name":"{{ rpc.bts_name }}","type":"{{ rpc.bts_type }}","usee":"{{ rpc.bts_use }}","rck":"{{ rpc.rack }}","sport":"{{ rpc.switch_port }}","nt":"{{ rpc.notes }}"}' 
+                                        onmouseover="this.style.color='#15418f';" 
+                                        onmouseout="this.style.color='black';"-->
+                                        <td class="element" style="text-align: center;">{{ rpc.i_d }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.bts_name }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.bts_type }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.bts_use }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.rack }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.switch_port }}</td>
+                                        <td style="text-align: center;" id="mmm">
                                             {% for mm in getBTSMOD %}
                                                 {% if mm.assign == '1' %}
                                                     {% if mm.bts_info_id.bts_name == rpc.bts_name %}
-                                                        {{ mm.module_name }};
+                                                    <div>
+                                                        <a href="#showModInfo" class="open-showModInfo" data-toggle="modal" data-todo='{"id":"{{ mm.i_d }}","name":"{{ mm.module_name }}","bts":"{{ mm.bts_info_id }}","brand":"{{ mm.module_brand }}","sn":"{{ mm.serial_number }}","pn":"{{ mm.product_number }}", "an":"{{ mm.asset_number }}","notes":"{{ mm.notes }}"}' style="text-decoration: none; color: black" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';">
+                                                            {{ mm.module_name }}
+                                                        </a>
+                                                    </div>
                                                     {% endif %}
                                                 {% endif %}
                                             {% endfor %}
                                         </td>
-                                        <td class="element">{{ rpc.notes }}</td>
-                                        <td class="element" style="width: 10%">
+                                        <td class="element" style="text-align: center;">{{ rpc.notes }}</td>
+                                        <td class="element" style="width: 5%" style="text-align: center;">
                                         <a data-toggle="modal" data-id="{{ rpc.i_d }}" data-toggle="modal" class="open-DeleteDialogInfo btn btn-primary" href="#deleteIndvBTSINFO" 
                                         onmouseover="this.style.color='#15418f';" 
                                         onmouseout="this.style.color='black';" 
@@ -487,39 +1036,45 @@
                                         style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-edit"></i></a>
                                         </td>
                                     </tr>
+
                                 {% endfor %}
                             </tbody>
+                            
                         </table>
                 </div>
+                <!-- CONTENTS OF BTS MODULE TAB -->
                 <div class="tab-pane" id="3b">
                     <div class="add-button" style="padding-top: 0px">
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addBTSMOD"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteBTSMOD"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                        <form action="exportBTSMOD">
+                                <button type="submit" class="btn btn-primary btn-sm" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                            </form>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addBTSMOD"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteBTSMOD"><i class="fa fa-minus" aria-hidden="true"></i></button>
                         </div>
                         <table id="data-table-basic-mod" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
                             <thead>
                                 <tr>
-                                    <th> Info ID </th>
-                                    <th> Name </th>
-                                    <th style="display: "> Brand </th>
-                                    <th style="display: "> Serial Number </th>
-                                    <th style="display: "> Product Number </th>
-                                    <th style="display: "> Asset Number </th>
-                                    <th style="display: "> Notes </th>
+                                    <th style="text-align: center;"> Info ID </th>
+                                    <th style="text-align: center;"> Name </th>
+                                    <th style="text-align: center;"> Brand </th>
+                                    <th style="text-align: center;"> Serial Number </th>
+                                    <th style="text-align: center;"> Product Number </th>
+                                    <th style="text-align: center;"> Asset Number </th>
+                                    <th style="text-align: center;"> Notes </th>
                                     <th style="width: 5%"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for rpc in getBTSMOD %}
                                     <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
-                                        <td class="element">{{ rpc.bts_info_id }}</td>
-                                        <td class="element">{{ rpc.module_name }}</td>
-                                        <td class="element" style="display: ">{{ rpc.module_brand }}</td>
-                                        <td class="element" style="display: ">{{ rpc.serial_number }}</td>
-                                        <td class="element" style="display: ">{{ rpc.product_number }}</td>
-                                        <td class="element">{{ rpc.asset_number }}</td>
-                                        <td class="element">{{ rpc.notes }}</td>
-                                        <td class="element" style="width: 10%">
+                                        <td class="element" style="text-align: center;">{{ rpc.bts_info_id }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.module_name }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.module_brand }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.serial_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.product_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.asset_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.notes }}</td>
+                                        <td class="element" style="width: 5%">
                                         <a data-toggle="modal" data-id="{{ rpc.i_d }}" data-toggle="modal" class="open-DeleteDialogMod btn btn-primary" href="#deleteIndvBTSMOD" 
                                         onmouseover="this.style.color='#15418f';" 
                                         onmouseout="this.style.color='black';" 
@@ -527,6 +1082,119 @@
                                             <i class="fa fa-trash"></i>
                                         </a>
                                         <a id="todolink" href="#editBTSMOD" class="open-EditmDialog btn btn-primary" data-toggle="modal" data-todo='{"id":"{{ rpc.i_d }}","bities":"{{ rpc.bts_info_id }}","name":"{{ rpc.module_name }}","brnd":"{{ rpc.module_brand }}","snum":"{{ rpc.serial_number }}","pum":"{{ rpc.product_number }}","anu":"{{ rpc.asset_number }}", "nt":"{{ rpc.notes }}"}' 
+                                        onmouseover="this.style.color='#15418f';" 
+                                        onmouseout="this.style.color='black';" 
+                                        style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <!-- CONTENTS OF TM50 PC TAB -->
+                <div class="tab-pane" id="4b">
+                    <div class="add-button" style="padding-top: 0px">
+                        <form action="exportTMPC">
+                                <button type="submit" class="btn btn-primary btn-sm" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                            </form>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addTMPC"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteTMPC"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                        </div>
+                        <table id="data-table-basic-tm500" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;"> IP </th>
+                                    <th style="text-align: center;"> Display Name </th>
+                                    <th style="text-align: center;"> Username </th>
+                                    <th style="text-align: center;"> Password </th>
+                                    <th style="text-align: center;"> Domain </th>
+                                    <th style="text-align: center;"> TM500 Info IP</th>
+                                    <th style="text-align: center;"> Rack </th>
+                                    <th style="text-align: center;"> Switch Port </th>
+                                    <th style="text-align: center;"> Serial No. </th>
+                                    <th style="text-align: center;"> Product No. </th>
+                                    <th style="text-align: center;"> Asset No. </th>
+                                    <th style="text-align: center;"> Notes </th>
+                                    <th style="width: 5%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rpc in getTMPC %}
+                                    <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
+                                        <td class="element" style="text-align: center;">{{ rpc.ip }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.display_name }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.username }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.password }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.domain }}</td>
+                                        <td class="element" style="text-align: center;">
+                                            <a href="#showTINFO" class="open-showTINFO" data-toggle="modal" data-todo='{"id":"{{ rpc.tm500_info_id.ip }}","rack":"{{ rpc.tm500_info_id.rack }}","sport":"{{ rpc.tm500_info_id.switch_port }}","notes":"{{ rpc.tm500_info_id.notes }}","sn":"{{ mm.serial_number }}","pn":"{{ mm.product_number }}", "an":"{{ mm.asset_number }}"}' style="text-decoration: none; color: black" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';">
+                                                {% if rpc.tm500_info_id != None %}
+                                                    {{ rpc.tm500_info_id }}
+                                                {% endif %}
+                                            </a>
+                                        </td>
+                                        <td class="element" style="text-align: center;">{{ rpc.rack }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.switch_port }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.serial_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.product_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.asset_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.notes }}</td>
+                                        <td class="element" style="width: 5%">
+                                        <a data-toggle="modal" data-id="{{ rpc.ip }}" data-toggle="modal" class="open-DeleteDialogTMPC btn btn-primary" href="#deleteIndvTMPC" 
+                                        onmouseover="this.style.color='#15418f';" 
+                                        onmouseout="this.style.color='black';" 
+                                        style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        <a id="todolink" href="#editTMPC" class="open-EdittDialog btn btn-primary" data-toggle="modal" data-todo='{"id":"{{ rpc.ip }}","name":"{{ rpc.display_name }}","uname":"{{ rpc.username }}","pword":"{{ rpc.password }}","dmn":"{{ rpc.domain }}","bites":"{{ rpc.bts_info_id }}","yue":"{{ rpc.ue_type }}", "ar":"{{ rpc.rack }}", "test":"{{ rpc.tt_info_id }}", "swort":"{{ rpc.switch_port }}", "esnum":"{{ rpc.serial_number }}", "pinum":"{{ rpc.product_number }}", "asnum":"{{ rpc.asset_number }}", "nonot":"{{ rpc.notes }}", "tiem":"{{ rpc.tm500_info_id }}"}' 
+                                        onmouseover="this.style.color='#15418f';" 
+                                        onmouseout="this.style.color='black';" 
+                                        style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <!-- CONTENTS OF TM500 INFO TAB -->
+                <div class="tab-pane" id="5b">
+                    <div class="add-button" style="padding-top: 0px">
+                            <form action="exportTMINFO">
+                                <button type="submit" class="btn btn-primary btn-sm" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                            </form>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteTMINFO"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                        </div>
+                        <table id="data-table-basic-tm500-info" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;"> IP </th>
+                                    <th style="text-align: center;"> Rack </th>
+                                    <th style="text-align: center;"> Switch Port </th>
+                                    <th style="text-align: center;"> Serial No. </th>
+                                    <th style="text-align: center;"> Product No. </th>
+                                    <th style="text-align: center;"> Asset No. </th>
+                                    <th style="text-align: center;"> Notes </th>
+                                    <th style="width: 5%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rpc in getTMINFO %}
+                                    <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
+                                        <td class="element" style="text-align: center;">{{ rpc.ip }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.rack }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.switch_port }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.serial_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.product_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.asset_number }}</td>
+                                        <td class="element" style="text-align: center;">{{ rpc.notes }}</td>
+                                        <td class="element" style="width: 5%">
+                                        <a data-toggle="modal" data-id="{{ rpc.ip }}" data-toggle="modal" class="open-DeleteDialog-tm-info btn btn-primary" href="#deleteIndvTMINFO" 
+                                        onmouseover="this.style.color='#15418f';" 
+                                        onmouseout="this.style.color='black';" 
+                                        style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        <a id="todolink" href="#editTMINFO" class="open-EditfDialog btn btn-primary" data-toggle="modal" data-todo='{"id":"{{ rpc.ip }}","name":"{{ rpc.display_name }}","uname":"{{ rpc.username }}","pword":"{{ rpc.password }}","dmn":"{{ rpc.domain }}","bites":"{{ rpc.bts_info_id }}","yue":"{{ rpc.ue_type }}", "ar":"{{ rpc.rack }}", "test":"{{ rpc.tt_info_id }}", "swort":"{{ rpc.switch_port }}", "esnum":"{{ rpc.serial_number }}", "pinum":"{{ rpc.product_number }}", "asnum":"{{ rpc.asset_number }}", "nonot":"{{ rpc.notes }}", "tiem":"{{ rpc.tm500_pc_id }}"}' 
                                         onmouseover="this.style.color='#15418f';" 
                                         onmouseout="this.style.color='black';" 
                                         style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-edit"></i></a>
@@ -690,6 +1358,45 @@
                                 </div>
                             </div>
                             {% endif %} 
+                            {% if 'tm500_add_error' in message.extra_tags %}
+                            <div class="modal-header">
+                                <h3>{{ message }}</h3>
+                            </div>
+                            <div class="modal-body">
+                                IP is already existing.
+                            </div>
+                            <div class="modal-footer">
+                                <div class="success-modal-buttons">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            {% endif %} 
+                            {% if 'tm500_del_error' in message.extra_tags %}
+                            <div class="modal-header">
+                                <h3>{{ message }}</h3>
+                            </div>
+                            <div class="modal-body">
+                                TM500 PC is attached to a BTS PC.
+                            </div>
+                            <div class="modal-footer">
+                                <div class="success-modal-buttons">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if 'tminfo_del_error' in message.extra_tags %}
+                            <div class="modal-header">
+                                <h3>{{ message }}</h3>
+                            </div>
+                            <div class="modal-body">
+                                TM500 INFO is attached to a TM500 PC.
+                            </div>
+                            <div class="modal-footer">
+                                <div class="success-modal-buttons">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            {% endif %}
                          </div>
                     </div>
                 </div>
@@ -786,7 +1493,7 @@
                                 <select class="form-control" id="tm_500" name="tm_500">
                                     <option value="" disabled selected>Select TM500</option>
                                     {% for pc in getTMPC %}
-                                        <option value="{{ pc.serverName }}">{{ pc.serverName }}</option>
+                                        <option value="{{ pc.ip }}">{{ pc.ip }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -932,7 +1639,7 @@
                                 <select class="form-control" id="editTM500" name="editTM500">
                                     <option value="" disabled selected>Select TM500</option>
                                     {% for pc in getTMPC %}
-                                        <option value="{{ pc.serverName }}">{{ pc.serverName }}</option>
+                                        <option value="{{ pc.ip }}">{{ pc.ip }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -1321,7 +2028,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete BTS PCs</h3>
+                <h3 class="modal-title">Delete BTS INFOs</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -1574,7 +2281,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete BTS PCs</h3>
+                <h3 class="modal-title">Delete BTS Modules</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -1607,6 +2314,1127 @@
     </div>
 </div>
 
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+                                            <!-- TM500 PC MODALS --->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------->
+<!------------------------ ADD - MODAL TM500 PC ----------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="addTMPC" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Add New TM500 PC</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="form-group" id="server-form">
+                            <label class="control-label col-sm-3" for="server_name" style="">IP</label>
+                            <div class="col-sm-8">
+                                <input type="text" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" class="form-control" id="server_name" placeholder="Enter IP (xxx.xxx.xxx.xxx)" name="server_name" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="display_name" style="">Display Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="display_name" placeholder="Enter Display Name" name="display_name" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="username" style="">Username</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="password" style="">Password</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="password" placeholder="Enter Password" name="password" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="do_main" style="">Domain</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="do_main" placeholder="Enter Domain" name="do_main" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="tm_info_ip" style="">TM500 Info IP</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" id="tm_info_ip" name="tm_info_ip">
+                                    <option value="" disabled selected>Select TM500 Info IP</option>
+                                    {% for tt in getTMINFO %}
+                                        <option value="{{ tt.ip }}">{{ tt.ip }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="sport" style="">Switch Port</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="sport" placeholder="Port" name="sport" pattern="\d*" value="">
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="rack" style="">Rack</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="rack" placeholder="Rack" name="rack" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="s_n" style="">Serial Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_n" placeholder="Enter Serial No." name="s_n" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="p_n" style="">Product Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="p_n" placeholder="Enter Product No." name="p_n" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="a_n" style="">Asset Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="a_n" placeholder="Enter Asset No." name="a_n" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="txta" style="">Notes</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control rounded-0" id="txta" name="txta" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="add-tm500" name="operation">
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------->
+<!------------------------ EDIT - MODAL TM500 PC ----------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="editTMPC" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Update TM500 PC</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="form-group row">
+                                <div class="col-sm-8">
+                                    <input type="text" style="display: block; border: none; font-weight: bold; font-size: 18px" name="editID" id="editID" readonly="readonly" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editDN" style="">Display Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="editDN" placeholder="Enter Display Name" name="editDN" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editUN" style="">Username</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="editUN" placeholder="Enter Username" name="editUN" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editPW" style="">Password</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="editPW" placeholder="Enter Password" name="editPW" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editDM" style="">Domain</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="editDM" placeholder="Enter Domain" name="editDM" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editT5" style="">TM500 Info IP</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" id="editT5" name="editT5">
+                                    <option value="" disabled selected>Select TM500 Info IP</option>
+                                    {% for tt in getTMINFO %}
+                                        <option value="{{ tt.ip }}">{{ tt.ip }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editSPort" style="">Switch Port</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="editSPort" placeholder="Port" name="editSPort" value="">
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="editRack" style="">Rack</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="editRack" placeholder="Rack" name="editRack" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editSNum" style="">Serial Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="editSNum" placeholder="Enter Serial No." name="editSNum" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editPNum" style="">Product Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="editPNum" placeholder="Enter Product No." name="editPNum" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editANum" style="">Asset Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="editANum" placeholder="Enter Asset No." name="editANum" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editNotes" style="">Notes</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control rounded-0" id="editNotes" name="editNotes" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="update-tm500" name="operation">
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------->
+<!------------------------ DEL INDIV - MODAL TM500 PC ----------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="deleteIndvTMPC" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Delete Remote PC</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                    Are you sure you want to delete this server?
+                        <div class="form-group row">
+                            <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
+                            <div class="col-sm-8">
+                                <input type="text" style="display: block; border: none; font-weight: bold" name="deleteID" id="deleteID" readonly="readonly" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="del-indiv-tmpc" name="operation">
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------->
+<!------------------------ DELETE - MODAL  -------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="deleteTMPC" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Delete TM500 PCs</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="form-group">                            
+                            <div class="checkbox">
+                                {% for rpc in getTMPC %}
+                                <label class="col-sm-12" for="server_name" style="margin-bottom: 11px">
+                                    {{ rpc.ip }} ({{ rpc.display_name }})
+                                    <!---------------- DISPLAY NAME (IP ADDRESS) ----------------------->
+                                    <div style="float: right;">
+                                        <input type="checkbox" id="server_name" name="server_name" value="{{ rpc.ip }}">
+                                    </div>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="delete-tmpc" name="operation">
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+                                            <!-- TM500 INFO MODALS --->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------->
+<!------------------------ ADD - MODAL TM500 PC ----------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="addTMINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Add New TM500 INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="form-group" id="server-form">
+                            <label class="control-label col-sm-3" for="server_name" style="">IP</label>
+                            <div class="col-sm-8">
+                                <input type="text" pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" class="form-control" id="server_name" placeholder="Enter IP (xxx.xxx.xxx.xxx)" name="server_name" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="sport" style="">Switch Port</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="sport" placeholder="Port" name="sport" pattern="\d*" value="">
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="rack" style="">Rack</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="rack" placeholder="Rack" name="rack" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="s_n" style="">Serial Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="s_n" placeholder="Enter Serial No." name="s_n" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="p_n" style="">Product Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="p_n" placeholder="Enter Product No." name="p_n" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="a_n" style="">Asset Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="a_n" placeholder="Enter Asset No." name="a_n" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="txta" style="">Notes</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control rounded-0" id="txta" name="txta" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="add-tm-info" name="operation">
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------->
+<!------------------------ EDIT - MODAL TM500 PC ----------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="editTMINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Update TM500 INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="form-group row">
+                                <div class="col-sm-8">
+                                    <input type="text" style="display: block; border: none; font-weight: bold; font-size: 18px" name="" id="editID" readonly="readonly" value=""/>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="editRack" style="">Rack</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="editRack" placeholder="Rack" name="editRack" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editSNum" style="">Serial Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="editSNum" placeholder="Enter Serial No." name="editSNum" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editPNum" style="">Product Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="editPNum" placeholder="Enter Product No." name="editPNum" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editANum" style="">Asset Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="editANum" placeholder="Enter Asset No." name="editANum" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="editNotes" style="">Notes</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control rounded-0" id="editNotes" name="editNotes" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="update-tm-info" name="operation">
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------->
+<!------------------------ DEL INDIV - MODAL TM500 INFO ----------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="deleteIndvTMINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Delete Remote PC</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                    Are you sure you want to delete this server?
+                        <div class="form-group row">
+                            <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
+                            <div class="col-sm-8">
+                                <input type="text" style="display: block; border: none; font-weight: bold" name="deleteID" id="deleteID" readonly="readonly" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="del-indiv-tm-info" name="operation">
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------->
+<!------------------------ DELETE - MODAL  -------------------------->
+<!------------------------------------------------------------------->
+<div class="modal fade" id="deleteTMINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Delete TM500 INFOs</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="form-group">                            
+                            <div class="checkbox">
+                                {% for rpc in getTMINFO %}
+                                <label class="col-sm-12" for="server_name" style="margin-bottom: 11px">
+                                    {{ rpc.ip }}
+                                    <!---------------- DISPLAY NAME (IP ADDRESS) ----------------------->
+                                    <div style="float: right;">
+                                        <input type="checkbox" id="server_name" name="server_name" value="{{ rpc.ip }}">
+                                    </div>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="delete-tminfo" name="operation">
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+                                            <!-- MODALS --->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+
+<div class="modal fade" id="showBTSINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">BTS INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="showID">ID: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showID" name="showID" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showName">Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showName" name="showName" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showType">Type: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showType" name="showType" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showUse">Use: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showUse" name="showUse" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showRack">Rack: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showRack" name="showRack" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showSport">Switch Port: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showSport" name="showSport" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showNotes">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showNotes" name="showNotes" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" style="float: left;">MODULES</label>
+                        </div>
+                        <div class="form-group" id="mod1label" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod1">Module Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod1" name="showMod1" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod1blabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod1B">Module Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod1B" name="showMod1B" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod1slabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod1S">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod1S" name="showMod1S" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod1plabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod1P">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod1P" name="showMod1P" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod1alabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod1A">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod1A" name="showMod1A" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod1nlabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod1N">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod1N" name="showMod1N" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------->
+                        <hr>
+                        <div class="form-group" id="mod2label" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod2" id="mod2label">Module Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod2" name="showMod2" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod2blabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod2B">Module Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod2B" name="showMod2B" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod2slabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod2S">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod2S" name="showMod2S" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod2plabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod2P">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod2P" name="showMod2P" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod2alabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod2A">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod2A" name="showMod2A" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod2nlabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod2N">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod2N" name="showMod2N" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------->
+                        <hr>
+                        <div class="form-group"  id="mod3label" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod3">Module Name: </label>
+                            <div class="col-sm-2" >
+                                <input type="text" id="showMod3" name="showMod3" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod3blabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod3B" >Module Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod3B" name="showMod3B" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod3slabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod3S" >Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod3S" name="showMod3S" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod3plabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod3P" >Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod3P" name="showMod3P" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod3alabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod3A" >Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod3A" name="showMod3A" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mod3nlabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showMod3N" >Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showMod3N" name="showMod3N" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="showTTINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">TEST TERMINAL INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="showID">ID: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showID" name="showID" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showName">Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showName" name="showName" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showType">Type: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showType" name="showType" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showUse">Use: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showUse" name="showUse" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showRack">Rack: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showRack" name="showRack" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showSport">Switch Port: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showSport" name="showSport" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showNotes">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showNotes" name="showNotes" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" style="float: left;">MODULES</label>
+                        </div>
+                        <div class="form-group" id="tt1label" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT1">Module Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT1" name="showTT1" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt1blabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT1B">Module Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT1B" name="showTT1B" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt1slabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT1S">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT1S" name="showTT1S" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt1plabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT1P">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT1P" name="showTT1P" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt1alabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT1A">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT1A" name="showTT1A" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt1nlabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT1N">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT1N" name="showTT1N" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------->
+                        <hr>
+                        <div class="form-group" id="tt2label" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT2" id="mod2label">Module Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT2" name="showTT2" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt2blabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT2B">Module Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT2B" name="showTT2B" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt2slabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT2S">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT2S" name="showTT2S" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt2plabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT2P">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT2P" name="showTT2P" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt2alabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT2A">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT2A" name="showTT2A" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt2nlabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT2N">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT2N" name="showTT2N" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------->
+                        <hr>
+                        <div class="form-group"  id="tt3label" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT3">Module Name: </label>
+                            <div class="col-sm-2" >
+                                <input type="text" id="showTT3" name="showTT3" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt3blabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT3B" >Module Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT3B" name="showTT3B" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt3slabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT3S" >Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT3S" name="showTT3S" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt3plabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT3P" >Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT3P" name="showTT3P" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt3alabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT3A" >Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT3A" name="showTT3A" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" id="tt3nlabel" style="display: none">
+                            <label class="control-label col-sm-3" for="showTT3N" >Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showTT3N" name="showTT3N" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="showTMINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">TM500 PC INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="showID">ID: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showID" name="showID" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showName">Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showName" name="showName" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showUN">Username: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showUN" name="showUN" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showPass">Password: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showPass" name="showPass" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showDomain">Domain: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showDomain" name="showDomain" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showT5">TM500 Info IP: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showT5" name="showT5" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showRack">Rack: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showRack" name="showRack" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showSport">Switch Port: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showSport" name="showSport" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="shwoSN">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="shwoSN" name="shwoSN" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showPN">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showPN" name="showPN" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showAN">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showAN" name="showAN" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showNotes">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showNotes" name="showNotes" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>  
+
+<div class="modal fade" id="showModInfo" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">MODULE INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="showID">ID: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showID" name="showID" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showName">Name: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showName" name="showName" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showUN">BTS Info ID: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showUN" name="showUN" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showPass">Brand: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showPass" name="showPass" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showDomain">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showDomain" name="showDomain" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showT5">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showT5" name="showT5" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showRack">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showRack" name="showRack" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showSport">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showSport" name="showSport" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>  
+
+<div class="modal fade" id="showTINFO" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">TM500 INFO</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                         <div class="form-group">
+                            <label class="control-label col-sm-3" for="showID">ID: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showID" name="showID" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showName">Rack: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showName" name="showName" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showUN">Switch Port: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showUN" name="showUN" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showDomain">Serial Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showDomain" name="showDomain" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showT5">Product Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showT5" name="showT5" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showRack">Asset Number: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showRack" name="showRack" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="showPass">Notes: </label>
+                            <div class="col-sm-2">
+                                <input type="text" id="showPass" name="showPass" style="position: relative; top: 7px; border: none;" readonly="readonly" value="">
+                            </div>
+                        </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>    
 </body>
 <!-- end body -->
 </html>

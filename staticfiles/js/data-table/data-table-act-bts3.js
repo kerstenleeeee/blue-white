@@ -2,27 +2,6 @@
  "use strict";
 	
 	$(document).ready(function() {
-		$('#data-table-basic thead tr:eq(1) th').each(function (i) {
-			var title = $(this).text();
-			if (title != "") {
-				$(this).html('<input type="text" placeholder="Search ' + title + '" />');
-			}
-			//window.alert(title);
-
-
-			$('input', this).on('keyup change', function () {
-				if (table.column(i).search() !== this.value) {
-					//window.alert(i);
-					if (i == 8) {
-						return;
-					}
-					table
-						.column(i)
-						.search(this.value)
-						.draw();
-				}
-			});
-		});
 		var table = $('#data-table-basic').DataTable({
 			orderCellsTop: true,
 			"columnDefs": [
@@ -32,8 +11,6 @@
                	},
 			],
 			"bLengthChange": false,
-			"scrollY":        "200px",
-			"scrollX":        "200px",
         	"scrollCollapse": true,
         	"paging":         false,
         	"aoColumnDefs": [
@@ -41,7 +18,8 @@
 					'searchable' 	: false, 
                     'targets'       : [5],
                	},
-        	]
+        	],
+        	"bFilter": false
 		});
 
 
@@ -62,7 +40,7 @@
 
 			// labels
 
-			$("#labelDisplayName").text("Display Name:");
+			/**$("#labelDisplayName").text("Display Name:");
 			$("#labelServerName").text("Server Name:");
 			$("#labelUsername").text("Username:");
 			$("#labelPasssword").text("Password:");
@@ -133,7 +111,7 @@
 				}
 				else{
 					document.getElementById("btsInfoButton").style.display = "none";
-				}
+				}**/
 			// alert('You clicked on ' + data[0] + '\'s row');
 		});
 	});

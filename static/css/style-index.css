@@ -143,6 +143,7 @@ body{
     vertical-align: text-bottom;
     float: right;
     margin-left: 5px;
+    margin-right: 0px;
 }
 
 .main .col-sm-12 .add-button button:hover{

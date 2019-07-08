@@ -136,7 +136,7 @@ body{
 
 
 /******* header buttons *********/
-.main .col-sm-6 .add-button button{
+.main .col-sm-12 .add-button button{
     background-color: #15418f; 
     color: white; 
     border: 2px solid #15418f;
@@ -145,7 +145,7 @@ body{
     margin-left: 5px;
 }
 
-.main .col-sm-6 .add-button button:hover{
+.main .col-sm-12 .add-button button:hover{
     background-color: #eaf0f2;
     color: #15418f;
     border: 2px solid #eaf0f2;
@@ -182,4 +182,27 @@ body{
     color: #15418f;
 }
 
-/********* racks *********/
+/********* pills *********/
+#exTab3 .nav-pills > li > a {
+  border-radius: 4px 4px 0 0 ;
+}
+
+#exTab3 .nav-pills a{
+    color: #15418f;
+}
+
+#exTab3 .nav-pills a:hover{
+    color: black;
+}
+
+#exTab3 .nav-pills .active a,
+#exTab3 .nav-pills .active a:hover{
+    background-color: #15418f;
+    color: white;
+}
+
+#exTab3 .tab-content {
+  color : black;
+  background-color: #eaf0f2;
+  padding : 0px 0px;
+}

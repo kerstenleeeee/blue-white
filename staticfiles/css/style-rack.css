@@ -154,39 +154,14 @@ body{
 }
 
 
-.main .responsive-table {
-  overflow: auto;
+/***** for canvas ************/
+#box1 {
+  width:400px;
+  height:300px;
+  border-style: solid;
+  border-width: 2px;
 }
-
-.main table {
-  width: 100%;
-  border-spacing: 0;
-  border-collapse: collapse;
-  white-space:nowrap;
-}
-
-.main table th {
-  background: #BDBDBD;
-}
-
-.main table tr:nth-child(odd) {
-  background-color: #F2F2F2;
-}
-.main table tr:nth-child(even) {
-  background-color: #E6E6E6;
-}
-
-.main th, tr, td {
-  text-align: center;
-  border: 1px solid #E0E0E0;
-  padding: 5px;
-}
-
-.main img {
-  font-style: italic;
-  font-size: 11px;
-}
-
-.main .fa-bars{
-  cursor: move;
+canvas {
+    max-width: 100%;
+    max-height: 100%;
 }

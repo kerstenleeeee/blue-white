@@ -10,6 +10,11 @@ urlpatterns = [
     path('bts/', views.bts, name="btsView"),
     path('ue/', views.ue, name="ueView"),
     path('racks/', views.racks, name="rackView"),
+    path('exportBTSPC', views.exportCSV_BTSPC, name='exportCSV_BTSPC'),
+    path('exportBTSINFO', views.exportCSV_BTSINFO, name='exportCSV_BTSINFO'),
+    path('exportBTSMOD', views.exportCSV_BTSMOD, name='exportCSV_BTSMOD'),
+    path('exportTMPC', views.exportCSV_TMPC, name='exportCSV_TMPC'),
+    path('exportTMINFO', views.exportCSV_TMINFO, name='exportCSV_TMINFO'),
 ]
 
 if settings.DEBUG:

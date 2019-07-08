@@ -19,9 +19,12 @@
                     'targets'       : [5],
                	},
         	],
-        	"bFilter": false
+        	"bFilter": false,
+        	dom: 'Bfrtip',
+        	buttons: [
+            	'copy', 'csv', 'excel', 'pdf', 'print'
+        	],
 		});
-
 
 		//get the list of ip addresses
 		var cData = table.column(1).data();
