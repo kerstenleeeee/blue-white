@@ -74,6 +74,7 @@
     <script src="{% static 'js/data-table/data-table-act-bts-mod.js' %}"></script>
     <script src="{% static 'js/data-table/data-table-act-tm500.js' %}"></script>
     <script src="{% static 'js/data-table/data-table-act-tm500-info.js' %}"></script>
+    <script src="{% static 'js/data-table/data-table-act-files.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
     <script type="application/javascript">
@@ -739,102 +740,13 @@
             }
         });
     </script>
-    <!-------------------- EXPORT TABLE ------------------------->
-    <script type="text/javascript">
-        var xport = {
-        _fallbacktoCSV: true,  
-        toXLS: function(tableId, filename) {
-            this._filename = (typeof filename == 'undefined') ? tableId : filename;
-            
-            if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
-                return this.toCSV(tableId, filename);
-            } else if (this._getMsieVersion() || this._isFirefox()) {
-                alert("Not supported browser");
-            }
-
-            //Other Browser can download xls
-            var htmltable = document.getElementById(tableId);
-            var html = htmltable.outerHTML;
-
-            this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls'); 
-        },
-        toCSV: function(tableId, filename) {
-            this._filename = (typeof filename === 'undefined') ? tableId : filename;
-            // Generate our CSV string from out HTML Table
-            var csv = this._tableToCSV(document.getElementById(tableId));
-            // Create a CSV Blob
-            var blob = new Blob([csv], { type: "text/csv" });
-
-            // Determine which approach to take for the download
-            if (navigator.msSaveOrOpenBlob) {
-              // Works for Internet Explorer and Microsoft Edge
-                navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
-            } else {      
-                this._downloadAnchor(URL.createObjectURL(blob), 'csv');      
-            }
-        },
-        _getMsieVersion: function() {
-            var ua = window.navigator.userAgent;
-            var msie = ua.indexOf("MSIE ");
-            if (msie > 0) {
-              // IE 10 or older => return version number
-                return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
-            }
-
-            var trident = ua.indexOf("Trident/");
-            if (trident > 0) {
-              // IE 11 => return version number
-                var rv = ua.indexOf("rv:");
-                return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
-            }
-
-            var edge = ua.indexOf("Edge/");
-            if (edge > 0) {
-              // Edge (IE 12+) => return version number
-                return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
-            }
-
-            // other browser
-            return false;
-        },
-        _isFirefox: function(){
-            if (navigator.userAgent.indexOf("Firefox") > 0) {
-                return 1;
-            }
-            return 0;
-        },
-        _downloadAnchor: function(content, ext) {
-            var anchor = document.createElement("a");
-            anchor.style = "display:none !important";
-            anchor.id = "downloadanchor";
-            document.body.appendChild(anchor);
-
-            // If the [download] attribute is supported, try to use it
-              
-            if ("download" in anchor) {
-                anchor.download = this._filename + "." + ext;
-            }
-            anchor.href = content;
-            anchor.click();
-            anchor.remove();
-          },
-          _tableToCSV: function(table) {
-            // We'll be co-opting `slice` to create arrays
-            var slice = Array.prototype.slice;
-
-            return slice
-                .call(table.rows)
-                .map(function(row) {
-                    return slice
-                    .call(row.cells)
-                    .map(function(cell) {
-                    return '"t"'.replace("t", cell.textContent);
-                  })
-                  .join(",");
-            })
-            .join("\r\n");
-        }
-    };
+    <!----------- FILES -------------->
+    <script>
+        $(document).on("click", ".open-deleteDialog-FILE", function () { 
+            var ipe = $(this).data('todo').id;
+            $(".modal-body #deleteID").val( ipe );
+            $('#deleteFile').modal('show');
+    });
     </script>
     <!-----------------------------------------------------
     ---------------------- SCRIPTS ------------------------
@@ -855,7 +767,8 @@
                 </a>
                 <div class="new-div">
                     <!--<a href="{% url 'ueView' %}">UE</a>
-                    <a href="{% url 'btsView' %}">BTS</a>-->
+                    <a href="{% url 'btsView' %}">BTS</a>
+                    <a href="{% url 'mediaview' %}" style="font-weight: bold">Backup</a>-->
                 </div>
             </div>
         </div>
@@ -880,6 +793,9 @@
                     </li>
                     <li>
                         <a href="#5b" data-toggle="tab"><strong>TM500 INFO</strong></a>
+                    </li>
+                    <li>
+                        <a href="#6b" data-toggle="tab"><strong>Files</strong></a>
                     </li>
                 </ul>
                 <hr style="position: relative; top: -15px; background-color: #15418f; height: 2px">
@@ -925,7 +841,9 @@
                                         <td class="element" style="text-align: center;">{{ rpc.domain }}</td>
                                         <td class="element" style="text-align: center;" >
                                             <a href="#showBTSINFO" class="open-ShowBTSInfo" data-toggle="modal" data-todo='{"id":"{{ rpc.bts_info_id.i_d }}","name":"{{ rpc.bts_info_id.bts_name }}","type":"{{ rpc.bts_info_id.bts_type }}","use":"{{ rpc.bts_info_id.bts_use }}","rack":"{{ rpc.bts_info_id.rack }}","sport":"{{ rpc.bts_info_id.switch_port }}","notes":"{{ rpc.bts_info_id.notes }}", "mod1":"{{ rpc.bts_mod1 }}", "mod2":"{{ rpc.bts_mod2 }}", "mod3":"{{ rpc.bts_mod3 }}", "mod1brand":"{{rpc.bts_mod1.module_brand}}", "mod2brand":"{{rpc.bts_mod2.module_brand}}", "mod3brand":"{{rpc.bts_mod3.module_brand}}", "mod1sn":"{{rpc.bts_mod1.serial_number}}", "mod2sn":"{{rpc.bts_mod2.serial_number}}", "mod3sn":"{{rpc.bts_mod3.serial_number}}", "mod1pn":"{{rpc.bts_mod1.product_number}}", "mod2pn":"{{rpc.bts_mod2.product_number}}", "mod3pn":"{{rpc.bts_mod3.product_number}}", "mod1an":"{{rpc.bts_mod1.asset_number}}" , "mod2an":"{{rpc.bts_mod2.asset_number}}" , "mod3an":"{{rpc.bts_mod3.asset_number}}" , "mod1notes":"{{rpc.bts_mod1.notes}}", "mod2notes":"{{rpc.bts_mod2.notes}}", "mod3notes":"{{rpc.bts_mod3.notes}}"}' style="text-decoration: none; color: black" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';">
-                                                {{ rpc.bts_info_id }}
+                                                {% if rpc.bts_info_id != None %}
+                                                    {{ rpc.bts_info_id }}
+                                                {% endif %}
                                                 <!--{{ rpc.bts_mod1 }}
                                                 {{ rpc.bts_mod2 }}
                                                 {{ rpc.bts_mod3 }}-->
@@ -1067,7 +985,11 @@
                             <tbody>
                                 {% for rpc in getBTSMOD %}
                                     <tr data-todo='{"id":"{{ rpc.serverName }}", "un":"{{ rpc.username }}", "pass":"{{ rpc.password }}"}' class="open-info">
-                                        <td class="element" style="text-align: center;">{{ rpc.bts_info_id }}</td>
+                                        <td class="element" style="text-align: center;">
+                                            {% if rpc.bts_info_id != None %}
+                                                {{ rpc.bts_info_id }}
+                                            {% endif %}
+                                        </td>
                                         <td class="element" style="text-align: center;">{{ rpc.module_name }}</td>
                                         <td class="element" style="text-align: center;">{{ rpc.module_brand }}</td>
                                         <td class="element" style="text-align: center;">{{ rpc.serial_number }}</td>
@@ -1162,6 +1084,7 @@
                             <form action="exportTMINFO">
                                 <button type="submit" class="btn btn-primary btn-sm" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
                             </form>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addTMINFO"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteTMINFO"><i class="fa fa-minus" aria-hidden="true"></i></button>
                         </div>
                         <table id="data-table-basic-tm500-info" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
@@ -1201,6 +1124,35 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <!-- CONTENTS OF FILES TAB -->
+                <div class="tab-pane" id="6b">
+                    <div class="add-button" style="padding-top: 0px">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#uploadFile"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                        </div>
+                        <table id="data-table-basic-files" class="table table-hover w-auto" style="border: 0px solid black; width: 100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;"> Name </th>
+                                    <th style="text-align: center;"> Operations </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for f in getFiles %}
+                                <tr>
+                                    <td class="element" style="text-align: left;">{{ f.name }}</td>
+                                    <td class="element" style="text-align: center;">
+                                        <a href="media/{{ f.document }}" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';" style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-download"></i></a>
+                                        <!--<a href="{{ f.document }}" onmouseover="this.style.color='#15418f';" onmouseout="this.style.color='black';" style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-edit"></i></a>-->
+                                        <a id="todolink" href="#deleteFile" class="open-deleteDialog-FILE btn btn-primary" data-toggle="modal" data-todo='{"id":"{{ f.name }}"}' 
+                                            onmouseover="this.style.color='#15418f';" 
+                                            onmouseout="this.style.color='black';" 
+                                            style="color: black; background: transparent; border: 0px solid #eaf0f2; display:inline;  padding: 3px"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                 </div>
@@ -1422,9 +1374,9 @@
 <div class="modal fade" id="addBTSPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New BTS PC</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Add New BTS PC</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -1569,16 +1521,16 @@
 <div class="modal fade" id="editBTSPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Update BTS PC</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Update BTS PC</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
                     {% csrf_token %}
                         <div class="form-group row">
                                 <div class="col-sm-8">
-                                    <input type="text" style="display: block; border: none; font-weight: bold; font-size: 18px" name="editID" id="editID" readonly="readonly" value=""/>
+                                    <input type="text" style="display: block; border: none; font-weight: bold; font-size: 18px; " name="editID" id="editID" readonly="readonly" value=""/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -1615,6 +1567,7 @@
                                             <option value="{{ bb.bts_name }}">{{ bb.bts_name }}</option>
                                         {% endif %}
                                     {% endfor %}
+                                    <option value="">None</option>
                                 </select>
                             </div>
                         </div>
@@ -1714,14 +1667,14 @@
 <div class="modal fade" id="deleteIndvBTSPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete Remote PC</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Delete BTS PC</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
                     {% csrf_token %}
-                    Are you sure you want to delete this server?
+                    Are you sure you want to delete this BTS pc?
                         <div class="form-group row">
                             <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
                             <div class="col-sm-8">
@@ -1749,9 +1702,9 @@
 <div class="modal fade" id="deleteBTSPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete BTS PCs</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Delete BTS PCs</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -1804,9 +1757,9 @@
 <div class="modal fade" id="addBTSINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New BTS INFO</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Add New BTS INFO</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -1891,9 +1844,9 @@
 <div class="modal fade" id="editBTSINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Update BTS Info</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Update BTS Info</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -1991,14 +1944,14 @@
 <div class="modal fade" id="deleteIndvBTSINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete Remote PC</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Delete BTS Info</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
                     {% csrf_token %}
-                    Are you sure you want to delete this server?
+                    Are you sure you want to delete this BTS info?
                         <div class="form-group row">
                             <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
                             <div class="col-sm-8">
@@ -2026,9 +1979,9 @@
 <div class="modal fade" id="deleteBTSINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete BTS INFOs</h3>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Delete BTS INFOs</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2079,9 +2032,9 @@
 <div class="modal fade" id="addBTSMOD" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New BTS Module</h3>
+                <h3 class="modal-title" style="color: white; position: relative;top: 5px; font-weight: bolder;">Add New BTS Module</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2155,9 +2108,9 @@
 <div class="modal fade" id="editBTSMOD" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Update BTS Module</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Update BTS Module</h3>
             </div>
             <!-- $(".modal-body #editID").val( ipe );
             $(".modal-body #editBITIN").val( dne );
@@ -2196,6 +2149,7 @@
                                     {% for ii in getBTSINFO %}
                                         <option value="{{ ii.bts_name }}">{{ ii.bts_name }}</option>
                                     {% endfor %}
+                                    <option value="None">None</option>
                                 </select>
                             </div>
                         </div>
@@ -2244,14 +2198,14 @@
 <div class="modal fade" id="deleteIndvBTSMOD" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete Remote PC</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Delete BTS Module </h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
                     {% csrf_token %}
-                    Are you sure you want to delete this server?
+                    Are you sure you want to delete this BTS module?
                         <div class="form-group row">
                             <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
                             <div class="col-sm-8">
@@ -2279,9 +2233,9 @@
 <div class="modal fade" id="deleteBTSMOD" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete BTS Modules</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Delete BTS Modules</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2332,9 +2286,9 @@
 <div class="modal fade" id="addTMPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New TM500 PC</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Add New TM500 PC</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2438,9 +2392,9 @@
 <div class="modal fade" id="editTMPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Update TM500 PC</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Update TM500 PC</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2542,14 +2496,14 @@
 <div class="modal fade" id="deleteIndvTMPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete Remote PC</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Delete TM500 PC</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
                     {% csrf_token %}
-                    Are you sure you want to delete this server?
+                    Are you sure you want to delete this TM500 pc?
                         <div class="form-group row">
                             <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
                             <div class="col-sm-8">
@@ -2577,9 +2531,9 @@
 <div class="modal fade" id="deleteTMPC" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete TM500 PCs</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Delete TM500 PCs</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2630,9 +2584,9 @@
 <div class="modal fade" id="addTMINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New TM500 INFO</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Add New TM500 INFO</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2701,9 +2655,9 @@
 <div class="modal fade" id="editTMINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Update TM500 INFO</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Update TM500 INFO</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -2766,14 +2720,14 @@
 <div class="modal fade" id="deleteIndvTMINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete Remote PC</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Delete TM500 Info</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
                     {% csrf_token %}
-                    Are you sure you want to delete this server?
+                    Are you sure you want to delete this TM500 info?
                         <div class="form-group row">
                             <input type="text" style="display: none" name="deleteID" id="deleteID" value=""/>
                             <div class="col-sm-8">
@@ -2801,9 +2755,9 @@
 <div class="modal fade" id="deleteTMINFO" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #15418f">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delete TM500 INFOs</h3>
+                <h3 class="modal-title" style="color: white; position: relative; top: 5px; font-weight: bolder;">Delete TM500 INFOs</h3>
             </div>
             <div class="modal-body">
                 <form method="POST" class="form-horizontal">
@@ -3434,7 +3388,76 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
+
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+                                            <!-- FILE MODALS --->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------->
+
+<div class="modal fade" id="uploadFile" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #15418f">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Upload File</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal" enctype="multipart/form-data" style="position: relative; left: 11px; top: 7px">
+                    {% csrf_token %}
+                    {{ form.as_p }} 
+                    <div class="form-group row">           
+                        <input type="text" style="display: none" value="add-file" name="operation">
+                    </div> 
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteFile" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #15418f">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color: white; font-weight: bolder; position: relative; top: 5px">Delete File</h3>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}
+                    Are you sure you want to delete this file?
+                        <div class="form-group row">
+                            <div style="position: relative; left: 15px">
+                                <input type="text" style="display: block; border: none; font-weight: bold" name="deleteID" id="deleteID" readonly="readonly" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">           
+                            <input type="text" style="display: none" value="del-file" name="operation">
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <div class="add-modal-buttons">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <!-- end body -->
 </html>

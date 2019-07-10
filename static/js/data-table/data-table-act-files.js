@@ -2,7 +2,7 @@
  "use strict";
 	
 	$(document).ready(function() {
-		var table = $('#data-table-basic-tm500-info').DataTable({
+		var table = $('#data-table-basic-files').DataTable({
 			orderCellsTop: true,
 			"bLengthChange": false,
         	"scrollCollapse": true,
@@ -10,27 +10,17 @@
         	"bFilter": false,
 		});
 
-		table.draw();
 
+		table.draw();
 
 		//get the list of ip addresses
 		var cData = table.column(1).data();
 
 		var editButton;
 		var deleteButton;
-		$('#data-table-basic-tm500-info tbody').on('click', 'td', function () {
-			if ($(this).index() == 0) {
-				return;
-			}
+		$('#data-table-basic-files tbody').on('click', 'td', function () {
 			
 			var data = table.row(this).data();
-			
-			//window.alert(data[6]);
-
-
-			// labels
-
-			
 		});
 	});
  

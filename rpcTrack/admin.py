@@ -8,6 +8,7 @@ admin.site.register(models.TM500_PC)		# list of all tm500 pcs
 admin.site.register(models.TM500_INFO)
 admin.site.register(models.BTS_INFO)	
 admin.site.register(models.BTS_MODULES)	
+admin.site.register(models.Files)	
 
 '''class btsInfoTime(admin.ModelAdmin):
     readonly_fields = ('last_fetch',)

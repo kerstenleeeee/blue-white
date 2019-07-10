@@ -4,12 +4,6 @@
 	$(document).ready(function() {
 		var table = $('#data-table-basic-mod').DataTable({
 			orderCellsTop: true,
-			"columnDefs": [
-				{
-					'orderable' 	: false, 
-                    'targets'       : [1],
-               	},
-			],
 			"bLengthChange": false,
         	"scrollCollapse": true,
         	"paging":         false,

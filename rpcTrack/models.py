@@ -1,4 +1,10 @@
 from django.db import models
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
 
 # Create your models here.
 class TM500_INFO(models.Model):
@@ -16,7 +22,7 @@ class TM500_INFO(models.Model):
 class TM500_PC(models.Model):
 	ip = models.GenericIPAddressField(primary_key = True)
 	display_name = models.CharField(null=False, blank=False, max_length = 225)
-	username = models.CharField(null = False, blank = False, max_length = 225)
+	username = models.CharField(null = False,  blank = False, max_length = 225)
 	password = models. CharField(null = False, blank = False, max_length = 225)
 	domain = models.CharField(null = True, blank = True, max_length = 225)
 	tm500_info_id = models.ForeignKey(TM500_INFO, related_name="tm500_info_id_for", on_delete=models.PROTECT, blank=True, null=True)
@@ -94,3 +100,12 @@ class BTS_PC(models.Model):
 	def __str__(self):
 		return '%s' % (self.ip)
 
+class Files(models.Model):
+	name = models.CharField(max_length=225, primary_key=True)
+	document = models.FileField(upload_to=settings.MEDIA_ROOT, blank=True)
+
+@receiver(post_delete, sender=Files)
+def submission_delete(sender, instance, **kwargs):
+	#del_path = os.path.join(settings.MEDIA_ROOT, str(instance.document))
+	#print(str(instance.document))
+	os.remove(str(instance.document))

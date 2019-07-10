@@ -5,6 +5,9 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic.edit import FormView
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.utils.encoding import smart_str
 
 ### modules ###
 import platform
@@ -14,7 +17,8 @@ import openpyxl
 from openpyxl.styles import Font
 
 ### imports ###
-from .models import UE_LIST, BTS_PC, TM500_PC, BTS_INFO, BTS_MODULES, TM500_INFO
+from .models import UE_LIST, BTS_PC, TM500_PC, BTS_INFO, BTS_MODULES, TM500_INFO, Files
+from .forms import DocumentForm
 
 # Create your views here.
 
@@ -26,9 +30,10 @@ def index(request):
     getBTSINFO = BTS_INFO.objects.all() # get bts pc info
     getBTSMOD = BTS_MODULES.objects.all()
     getTMINFO = TM500_INFO.objects.all()
+    getFiles = Files.objects.all()
     # newnew = btsPCInfo(serverName=btsPC.objects.get(serverName='10.12.25.11'), WCDMAPilot = '12345')
     # newnew.save()
-
+    form = DocumentForm(request.POST, request.FILES)
     if request.method == "POST":
         operation = request.POST['operation']
 
@@ -72,15 +77,16 @@ def index(request):
                             count = 1;
 
                             for mm in getBTSMOD:
-                                if str(mm.bts_info_id.bts_name) == str(bts_info):
-                                    if count == 1:
-                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif count == 2:
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif count == 3:
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    count = count + 1
+                                if mm.bts_info_id != None:
+                                    if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                        if count == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif count == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif count == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        count = count + 1
                         except:
                             print("no bts info")
                             newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=TM500_PC.objects.get(ip=tm_500))
@@ -100,26 +106,26 @@ def index(request):
 
                             countbts = 1;
                             counttt = 1;
-
                             for mm in getBTSMOD:
-                                if str(mm.bts_info_id.bts_name) == str(bts_info):
-                                    if countbts == 1:
-                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif countbts == 2:
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif countbts == 3:
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    countbts = countbts + 1
-                                if str(mm.bts_info_id.bts_name) == str(t_t):
-                                    if counttt == 1:
-                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif counttt == 2:
-                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif counttt == 3:
-                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    counttt = counttt + 1
+                                if mm.bts_info_id != None:
+                                    if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                        if countbts == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif countbts == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif countbts == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        countbts = countbts + 1
+                                    elif str(mm.bts_info_id.bts_name) == str(t_t):
+                                        if counttt == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif counttt == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif counttt == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        counttt = counttt + 1
                         except:
                             print("no bts info")
                             newBTS = BTS_PC(ip=server_name, display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tt_info_id=BTS_INFO.objects.get(bts_name=t_t))
@@ -127,15 +133,16 @@ def index(request):
                             counttt = 1;
 
                             for mm in getBTSMOD:
-                                if str(mm.bts_info_id.bts_name) == str(t_t):
-                                    if counttt == 1:
-                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif counttt == 2:
-                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif counttt == 3:
-                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    counttt = counttt + 1
+                                if mm.bts_info_id != None:
+                                    if str(mm.bts_info_id.bts_name) == str(t_t):
+                                        if counttt == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif counttt == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif counttt == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        counttt = counttt + 1
                         messages.success(request, 'Successfully Added')
             except:
                     messages.error(request, 'ERROR')
@@ -154,93 +161,83 @@ def index(request):
             p_n = request.POST['editPNum']
             a_n = request.POST['editANum']
 
-            '''
-            count = 1;
-
-                            for mm in getBTSMOD:
-                                if str(mm.bts_info_id.bts_name) == str(bts_info):
-                                    if count == 1:
-                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif count == 2:
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    elif count == 3:
-                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                    count = count + 1'''
-
             try:
                 bts_info = request.POST['editBTS']
                 print(bts_info)
-                try:
-                    if u_e == 'TM500':
-                        tm_500 = request.POST['editTM500']
-                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, bts_info_id=BTS_INFO.objects.get(bts_name=bts_info), tm500_pc_id=TM500_PC.objects.get(ip=tm_500))
-                        count = 1;
+                if str(bts_info) != "None":
+                    try:
+                        if u_e == 'TM500':
+                            tm_500 = request.POST['editTM500']
+                            BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, bts_info_id=BTS_INFO.objects.get(bts_name=bts_info), tm500_pc_id=TM500_PC.objects.get(ip=tm_500), tt_info_id="")
+                            count = 1;
 
-                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
-                        for mm in getBTSMOD:
-                            if str(mm.bts_info_id.bts_name) == str(bts_info):
-                                if count == 1:
-                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif count == 2:
-                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif count == 3:
-                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                count = count + 1
+                            BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
+                            for mm in getBTSMOD:
+                                if mm.bts_info_id != None:
+                                    if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                        if count == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif count == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif count == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        count = count + 1
 
-                    elif u_e == 'Test Terminal':
-                        t_t = request.POST['editTT']
-                        # print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, bts_info_id=BTS_INFO.objects.get(bts_name=bts_info), tt_info_id=BTS_INFO.objects.get(bts_name=t_t))
-                        countbts = 1;
-                        counttt = 1;
+                        elif u_e == 'Test Terminal':
+                            t_t = request.POST['editTT']
+                            # print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+                            BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, bts_info_id=BTS_INFO.objects.get(bts_name=bts_info), tt_info_id=BTS_INFO.objects.get(bts_name=t_t), tm500_pc_id="")
+                            countbts = 1;
+                            counttt = 1;
 
-                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
-                        for mm in getBTSMOD:
-                            if str(mm.bts_info_id.bts_name) == str(bts_info):
-                                if countbts == 1:
-                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif countbts == 2:
-                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif countbts == 3:
-                                    BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                countbts = countbts + 1
-                            if str(mm.bts_info_id.bts_name) == str(t_t):
-                                if counttt == 1:
-                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif counttt == 2:
-                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif counttt == 3:
-                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                counttt = counttt + 1
-                    messages.success(request, 'Successfully Updated')
-                except IntegrityError as e:
-                    messages.error(request, 'ERROR')
+                            BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
+                            for mm in getBTSMOD:
+                                if mm.bts_info_id != None:
+                                    if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                        if countbts == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif countbts == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif countbts == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        countbts = countbts + 1
+                                    if str(mm.bts_info_id.bts_name) == str(t_t):
+                                        if counttt == 1:
+                                            #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif counttt == 2:
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        elif counttt == 3:
+                                            BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                        counttt = counttt + 1
+                        messages.success(request, 'Successfully Updated')
+                    except IntegrityError as e:
+                        messages.error(request, 'ERROR')
             except:
                 try:
                     if u_e == 'TM500':
                         tm_500 = request.POST['editTM500']
-                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=TM500_PC.objects.get(ip=tm_500))
+                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tm500_pc_id=TM500_PC.objects.get(ip=tm_500), tt_info_id="", bts_info_id="")
                     elif u_e == 'Test Terminal':
                         t_t = request.POST['editTT']
-                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tt_info_id=BTS_INFO.objects.get(bts_name=t_t))
+                        BTS_PC.objects.filter(ip=server_name).update(display_name=display_name, username=ussername, password=pass_word, domain=do_main, ue_type=u_e, switch_port=sport, notes=txta, rack=rack, serial_number=s_n, product_number=p_n, asset_number=a_n, tt_info_id=BTS_INFO.objects.get(bts_name=t_t), tm500_pc_id="", bts_info_id="")
                         countbts = 1;
                         counttt = 1;
 
                         BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
                         for mm in getBTSMOD:
-                            if str(mm.bts_info_id.bts_name) == str(t_t):
-                                if counttt == 1:
-                                    #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
-                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif counttt == 2:
-                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                elif counttt == 3:
-                                    BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
-                                counttt = counttt + 1
+                            if mm.bts_info_id != None:
+                                if str(mm.bts_info_id.bts_name) == str(t_t):
+                                    if counttt == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif counttt == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif counttt == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(tt_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    counttt = counttt + 1
                     messages.success(request, 'Successfully Updated')
                 except IntegrityError as e:
                     messages.error(request, 'ERROR')
@@ -429,12 +426,29 @@ def index(request):
             txta = request.POST['txta']
 
             #print(name, b_rand, ayd, s_n, p_n, a_n, txta)
+            
             try:
                 try:
                     ayd = request.POST['ayd']
                     # print(BTS_INFO.objects.get(i_d=ayd))
                     newMod = BTS_MODULES(module_name=name, module_brand=b_rand, bts_info_id=BTS_INFO.objects.get(i_d=ayd), serial_number=s_n, product_number=p_n, asset_number=a_n, notes=txta, assign=1)
                     newMod.save()
+                    print(newMod.i_d)
+                    for rpc in getBTSPC:
+                        if str(rpc.bts_info_id.i_d) == str(ayd):
+                            if str(rpc.bts_mod1) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod1=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.bts_mod2) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.bts_mod2) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod3=BTS_MODULES.objects.get(module_name=name))
+                        elif str(rpc.tt_info_id.i_d) == str(ayd):
+                            if str(rpc.tt_mod1) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod1=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.tt_mod2) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.tt_mod3) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod3=BTS_MODULES.objects.get(module_name=name))
                     messages.success(request, 'Successfully Added')
                 except:
                     newMod = BTS_MODULES(module_name=name, module_brand=b_rand, serial_number=s_n, product_number=p_n, asset_number=a_n, notes=txta, assign=0)
@@ -457,14 +471,94 @@ def index(request):
                 try:
                     ayd = request.POST['editBITIN']
                     print(ayd)
-                    BTS_MODULES.objects.filter(i_d=i_d).update(module_name=name, module_brand=b_rand, bts_info_id=BTS_INFO.objects.get(bts_name=ayd), serial_number=s_n, product_number=p_n, asset_number=a_n, notes=txta, assign=1)
-                    #newMod.save()
+                    if str(ayd) != "None":
+                        BTS_MODULES.objects.filter(i_d=i_d).update(module_name=name, module_brand=b_rand, bts_info_id=BTS_INFO.objects.get(bts_name=ayd), serial_number=s_n, product_number=p_n, asset_number=a_n, notes=txta, assign=1)
+                        #newMod.save()
+                        '''for rpc in getBTSPC:
+                        if str(rpc.bts_info_id.i_d) == str(ayd):
+                            if str(rpc.bts_mod1) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod1=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.bts_mod2) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.bts_mod2) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod3=BTS_MODULES.objects.get(module_name=name))
+                        elif str(rpc.tt_info_id.i_d) == str(ayd):
+                            if str(rpc.tt_mod1) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod1=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.tt_mod2) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.tt_mod3) == "None":
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod3=BTS_MODULES.objects.get(module_name=name))'''
+                        for rpc in getBTSPC:
+                            if str(rpc.bts_info_id.bts_name) == str(ayd):
+                                if str(rpc.bts_mod1) == "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod1=BTS_MODULES.objects.get(module_name=name))
+                                elif str(rpc.bts_mod2) == "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2=BTS_MODULES.objects.get(module_name=name))
+                                elif str(rpc.bts_mod2) == "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod3=BTS_MODULES.objects.get(module_name=name))
+                            elif str(rpc.tt_info_id.i_d) == str(ayd):
+                                if str(rpc.tt_mod1) == "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod1=BTS_MODULES.objects.get(module_name=name))
+                                elif str(rpc.tt_mod2) == "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2=BTS_MODULES.objects.get(module_name=name))
+                                elif str(rpc.tt_mod3) == "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod3=BTS_MODULES.objects.get(module_name=name))
+                    elif str(ayd) == "None":
+                        BTS_MODULES.objects.filter(i_d=i_d).update(bts_info_id= "", module_name=name, module_brand=b_rand, serial_number=s_n, product_number=p_n, asset_number=a_n, notes=txta, assign=0)
+                        
+                        for rpc in getBTSPC:
+                            if str(rpc.bts_mod1.module_name) == str(name):
+                                if str(rpc.bts_mod2) != "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod1=BTS_MODULES.objects.get(module_name=rpc.bts_mod2.module_name))
+                                    if str(rpc.bts_mod3) != "None":
+                                        BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2=BTS_MODULES.objects.get(module_name=rpc.bts_mod3.module_name))
+                                    else:
+                                        BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2="")
+                                else:
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod1="")
+                            if str(rpc.bts_mod2.module_name) == str(name):
+                                if str(rpc.bts_mod3) != "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2=BTS_MODULES.objects.get(module_name=rpc.bts_mod3.module_name))
+                                else:
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod2="")
+                            if str(rpc.bts_mod3.module_name) == str(name):
+                                BTS_PC.objects.filter(ip=rpc.ip).update(bts_mod3="")
+                            if str(rpc.tt_mod1.module_name) == str(name):
+                                if str(rpc.tt_mod2) != "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod1=BTS_MODULES.objects.get(module_name=rpc.tt_mod2.module_name))
+                                    if str(rpc.tt_mod3) != "None":
+                                        BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2=BTS_MODULES.objects.get(module_name=rpc.tt_mod3.module_name))
+                                    else:
+                                        BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2="")
+                                else:
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod1="")
+                            if str(rpc.tt_mod2.module_name) == str(name):
+                                if str(rpc.tt_mod3) != "None":
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2=BTS_MODULES.objects.get(module_name=rpc.tt_mod3.module_name))
+                                else:
+                                    BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod2="")
+                            if str(rpc.tt_mod3.module_name) == str(name):
+                                BTS_PC.objects.filter(ip=rpc.ip).update(tt_mod3="")
+
+
+                        '''count = 1;
+                        
+                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1="", bts_mod2="", bts_mod3="", tt_mod1="", tt_mod2="", tt_mod3="")
+                        for mm in getBTSMOD:
+                            if mm.bts_info_id != None:
+                                if str(mm.bts_info_id.bts_name) == str(bts_info):
+                                    if count == 1:
+                                        #bts_info_id=BTS_INFO.objects.get(bts_name=bts_info)
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod1=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif count == 2:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod2=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    elif count == 3:
+                                        BTS_PC.objects.filter(ip=server_name).update(bts_mod3=BTS_MODULES.objects.get(i_d=mm.i_d))
+                                    count = count + 1'''
                     messages.success(request, 'Successfully Updated')
                 except:
-                    #messages.error(request, 'ERROR')
-                    BTS_MODULES.objects.filter(i_d=i_d).update(module_name=name, module_brand=b_rand, serial_number=s_n, product_number=p_n, asset_number=a_n, notes=txta, assign=0)
-                    newMod.save()
-                    messages.success(request, 'Successfully Added')
+                    messages.error(request, 'ERROR')
             except:
                 messages.error(request, 'ERROR')
 
@@ -650,6 +744,36 @@ def index(request):
                 except:
                     messages.error(request, 'Cannot Delete TM500 INFOs')
 
+        ##############################################################
+        ################### FILE OPERATIONS ##########################
+        ##############################################################
+        
+        elif operation == "add-file":
+            if form.is_valid():
+                #form.save()
+                #print(form.document.name)
+                newFile = Files()
+                newFile.name = form.cleaned_data['document']
+                for f in getFiles:
+                    if str(f.name) == str(newFile.name):
+                        Files.objects.get(name = f.name).delete()
+                newFile.document = form.cleaned_data['document']
+                print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+                print(newFile.document)
+                newFile.save()
+
+                messages.success(request, 'File Uploaded')
+                return redirect('index')
+
+        elif operation == "del-file":
+            dip = request.POST['deleteID']
+            try:
+                if Files.objects.filter(name = dip).exists():
+                    # print(Files.objects.values('document').get(name=dip))
+                    Files.objects.get(name = dip).delete()
+                    messages.success(request, 'Successfully Deleted')
+            except:
+                messages.error(request, 'Cannot Delete File')
 
     context = {
         "getUE" : getUE,
@@ -658,6 +782,8 @@ def index(request):
         "getBTSINFO" : getBTSINFO,
         "getBTSMOD" : getBTSMOD,
         "getTMINFO" : getTMINFO,
+        "getFiles" : getFiles,
+        'form': form,
     }
     return render(request, 'index.html', context)
 
@@ -746,7 +872,47 @@ def ue(request):
     return render(request, 'ue.html', context)
 
 def racks(request):
-    return render(request, 'racks.html')
+    '''if request.method == 'POST' and request.FILES['dbfile']:
+            myfile = request.FILES['dbfile']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            return render(request, 'racks.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+    return render(request, 'racks.html')'''
+
+    getFiles = Files.objects.all()
+    form = DocumentForm(request.POST, request.FILES)
+    '''if request.method == 'POST':
+        operation = request.POST['operation']
+        if operation == "add-file":
+            if form.is_valid():
+                #form.save()
+                #print(form.document.name)
+                newFile = Files()
+                newFile.name = form.cleaned_data['document']
+                for f in getFiles:
+                    if str(f.name) == str(newFile.name):
+                        Files.objects.get(name = f.name).delete()
+                text = form.cleaned_data['document']
+                text = "media/" + text
+                newFile.document = text
+                newFile.save()
+                return redirect('mediaview')
+        elif operation == "del-file":
+            dip = request.POST['deleteID']
+            try:
+                if Files.objects.filter(name = dip).exists():
+                    Files.objects.get(name = dip).delete()
+                    messages.success(request, 'Successfully Deleted')
+            except:
+                messages.error(request, 'Cannot Delete File')'''
+    context = {
+        'form': form,
+        "getFiles" : getFiles
+    }
+    return render(request, 'index.html', context)
 
 def exportCSV_BTSPC(request):
     category_queryset = BTS_PC.objects.all()
@@ -1006,3 +1172,12 @@ def exportCSV_TMINFO(request):
 
     wb.save(response)
     return response
+
+def download(request,file_name):
+    '''file_path = settings.MEDIA_ROOT +'/'+ file_name
+    response = HttpResponse(content_type='application/force-download')
+    response['X-Sendfile'] = file_path
+    response['Content-Length'] = os.stat(file_path).st_size
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file_name)
+    return response'''
+    return redirect('index')
